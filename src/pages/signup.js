@@ -74,12 +74,15 @@ export default function index() {
                                 }}
                             />
                             <TextField id="Contraseña-basic" label="Contraseña" variant="outlined"
+                            type="password"
                                 style={{
                                     margin: '10px',
                                     width: '90%',
                                 }}
                             />
-                            <TextField id="Confirmar-basic" label="Confirmar contraseña" variant="outlined"
+                            <TextField id="Confirmar-basic" label="Confirmar contraseña"
+                            type="password"
+                            variant="outlined"
                                 style={{
                                     margin: '10px',
                                     width: '90%',

@@ -56,6 +56,7 @@ export default function index() {
                                 }}
                             />
                             <TextField id="Password-basic" label="Password" variant="outlined"
+                            type="password"
                                 style={{
                                     marginBottom: '30px',
                                     width: '90%',
