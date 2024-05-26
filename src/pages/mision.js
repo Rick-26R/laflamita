@@ -5,7 +5,7 @@ export default function Mision() {
   return (
     <Container maxWidth="md" sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', gap: 4, backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)', padding: '50px 0' }}>
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <Card sx={{ maxWidth: 800, width: '100%', backgroundColor: 'rgba(255, 255, 255, 0.3)', borderRadius: '16px', boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.5)' }}>
+        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.1)',  borderRadius: '16px'}}>
           <CardMedia
             component="img"
             alt="Abarrotera de Temixco"
@@ -14,7 +14,7 @@ export default function Mision() {
             title="Abarrotera de Temixco"
             sx={{ objectFit: 'contain', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }} 
           />
-          <CardContent sx={{ textAlign: 'center', color: '#fff' }}>
+          <CardContent sx={{ textAlign: 'center', color: '#fff', backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
             <Typography variant="h3" component="h1" gutterBottom>
               Nuestra Misión
             </Typography>
@@ -29,7 +29,7 @@ export default function Mision() {
       </Box>
 
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <Card sx={{ maxWidth: 800, width: '100%', backgroundColor: 'rgba(255, 255, 255, 0.3)', borderRadius: '16px', boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.5)' }}>
+        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.1)', borderRadius: '16px' }}>
           <CardMedia
             component="img"
             alt="Nuestra Visión"
@@ -38,7 +38,7 @@ export default function Mision() {
             title="Nuestra Visión"
             sx={{ objectFit: 'contain', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }} 
           />
-          <CardContent sx={{ textAlign: 'center', color: '#fff' }}>
+          <CardContent sx={{ textAlign: 'center', color: '#fff', backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
             <Typography variant="h3" component="h1" gutterBottom>
               Nuestra Visión
             </Typography>
@@ -50,7 +50,7 @@ export default function Mision() {
       </Box>
 
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <Card sx={{ maxWidth: 800, width: '100%', backgroundColor: 'rgba(255, 255, 255, 0.3)', borderRadius: '16px', boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.5)' }}>
+        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.1)', borderRadius: '16px' }}>
           <CardMedia
             component="img"
             alt="Nuestro Objetivo"
@@ -59,7 +59,7 @@ export default function Mision() {
             title="Nuestro Objetivo"
             sx={{ objectFit: 'contain', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }} 
           />
-          <CardContent sx={{ textAlign: 'center', color: '#fff' }}>
+          <CardContent sx={{ textAlign: 'center', color: '#fff', backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
             <Typography variant="h3" component="h1" gutterBottom>
               Nuestro Objetivo
             </Typography>
@@ -71,7 +71,7 @@ export default function Mision() {
       </Box>
 
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <Card sx={{ maxWidth: 800, width: '100%', backgroundColor: 'rgba(255, 255, 255, 0.3)', borderRadius: '16px', boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.5)' }}>
+        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.1)', borderRadius: '16px' }}>
           <CardMedia
             component="img"
             alt="Horarios de Atención"
@@ -80,15 +80,15 @@ export default function Mision() {
             title="Horarios de Atención"
             sx={{ objectFit: 'contain', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }} 
           />
-          <CardContent sx={{ textAlign: 'center', color: '#fff' }}>
+          <CardContent sx={{ textAlign: 'center', color: '#fff', backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
             <Typography variant="h3" component="h1" gutterBottom>
               Horarios de Atención
             </Typography>
             <Typography variant="body1" paragraph>
-              Lunes a Viernes: 8:00 AM - 6:00 PM
+              Lunes a Viernes: 8:00 AM - 10:00 PM
             </Typography>
             <Typography variant="body1" paragraph>
-              Sábados: 8:00 AM - 2:00 PM
+              Sábados: 8:00 AM - 1:00 PM
             </Typography>
             <Typography variant="body1" paragraph>
               Domingos: Cerrado
@@ -98,7 +98,7 @@ export default function Mision() {
       </Box>
 
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 4 }}>
-        <Card sx={{ maxWidth: 800, width: '100%', backgroundColor: 'rgba(255, 255, 255, 0.3)', borderRadius: '16px', boxShadow: '0px 8px 16px rgba(0, 0, 0, 0.5)' }}>
+        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.1)', borderRadius: '16px' }}>
           <CardMedia
             component="img"
             alt="Nuestra Historia"
@@ -107,11 +107,11 @@ export default function Mision() {
             title="Nuestra Historia"
             sx={{ objectFit: 'contain', borderTopLeftRadius: '16px', borderTopRightRadius: '16px' }} 
           />
-          <CardContent sx={{ textAlign: 'center', color: '#fff' }}>
+          <CardContent sx={{ textAlign: 'center', color: '#fff', backgroundColor: 'rgba(255, 255, 255, 0.1)' }}>
             <Typography variant="h3" component="h1" gutterBottom>
               Nuestra Historia
             </Typography>
-            <Typography  variant="body1" paragraph>
+            <Typography variant="body1" paragraph>
               La Abarrotera de Temixco fue fundada en 1995 con el objetivo de proporcionar productos de primera necesidad a la comunidad local. Desde entonces, hemos crecido y evolucionado, adaptándonos a los cambios del mercado y siempre buscando la satisfacción de nuestros clientes. Nuestra trayectoria está marcada por un compromiso constante con la calidad y el servicio.
             </Typography>
           </CardContent>
@@ -120,4 +120,3 @@ export default function Mision() {
     </Container>
   );
 }
-
