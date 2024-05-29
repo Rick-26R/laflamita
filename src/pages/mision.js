@@ -3,9 +3,9 @@ import { Container, Typography, Box, Card, CardContent, CardMedia } from '@mui/m
 
 export default function Mision() {
   return (
-    <Container maxWidth="md" sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', gap: 4, backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)', padding: '50px 0' }}>
+    <Container maxWidth="md" sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', gap: 2, backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(5px)', padding: '50px 0' }}>
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.1)',  borderRadius: '16px'}}>
+        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.05)',  borderRadius: '16px'}}>
           <CardMedia
             component="img"
             alt="Abarrotera de Temixco"
@@ -29,7 +29,7 @@ export default function Mision() {
       </Box>
 
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.1)', borderRadius: '16px' }}>
+        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.05)', borderRadius: '16px' }}>
           <CardMedia
             component="img"
             alt="Nuestra Visión"
@@ -50,7 +50,7 @@ export default function Mision() {
       </Box>
 
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.1)', borderRadius: '16px' }}>
+        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.05)', borderRadius: '16px' }}>
           <CardMedia
             component="img"
             alt="Nuestro Objetivo"
@@ -71,7 +71,7 @@ export default function Mision() {
       </Box>
 
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
-        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.1)', borderRadius: '16px' }}>
+        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.05)', borderRadius: '16px' }}>
           <CardMedia
             component="img"
             alt="Horarios de Atención"
@@ -98,7 +98,7 @@ export default function Mision() {
       </Box>
 
       <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 4 }}>
-        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.1)', borderRadius: '16px' }}>
+        <Card sx={{ maxWidth: 800, width: '100%', boxShadow: '0px 8px 16px rgba(255, 255, 255, 0.05)', borderRadius: '16px' }}>
           <CardMedia
             component="img"
             alt="Nuestra Historia"
