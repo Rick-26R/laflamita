@@ -6,16 +6,16 @@ import MenuDash from '@/modules/MenuDash';
 import ContentAdmin from '@/modules/ContentAdmin';
 import ContentUser from '@/modules/ContentUser';
 
-export default function Dashboard() {
+export default function Orders() {
     const [user, setUser] = React.useState('admin');
 
     return (
         <>
             <Head>
-                <title>Dashboard</title>
+                <title>Ordenes</title>
             </Head>
             <Box sx={{ display: 'flex' }}>
-                <MenuDash title="Dashboard"/>
+                <MenuDash title="Ordenes"/>
                 <Box
                     component="main"
                     sx={{
@@ -28,8 +28,8 @@ export default function Dashboard() {
                         overflow: 'auto',
                     }}
                 >
+                    {/* Contenido */}
                     <Toolbar />
-                    {user === 'admin' ? (<ContentAdmin />) : (<ContentUser />)}
                 </Box>
             </Box>
         </>
