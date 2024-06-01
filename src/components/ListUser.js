@@ -9,14 +9,11 @@ import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 import RequestPageIcon from '@mui/icons-material/RequestPage';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import SettingsIcon from '@mui/icons-material/Settings';
-import Router from 'next/router';
 
 export const mainListItems = (
     <React.Fragment>
         <ListItemButton
-            onClick={() => {
-                Router.push('/dashboard')
-            }}
+            href='/dashboard'
         >
             <ListItemIcon>
                 <DashboardIcon />
@@ -25,9 +22,7 @@ export const mainListItems = (
         </ListItemButton>
 
         <ListItemButton
-            onClick={() => {
-                Router.push('/orders')
-            }}
+            href='/orders'
         >
             <ListItemIcon>
                 <ShoppingCartIcon />
@@ -36,9 +31,7 @@ export const mainListItems = (
         </ListItemButton>
 
         <ListItemButton
-            onClick={() => {
-                Router.push('/customers')
-            }}
+            href='/clients'
         >
             <ListItemIcon>
                 <PeopleIcon />
@@ -47,9 +40,7 @@ export const mainListItems = (
         </ListItemButton>
 
         <ListItemButton
-            onClick={() => {
-                Router.push('/users')
-            }}
+            href='/users'
         >
             <ListItemIcon>
                 <AssignmentIndIcon />
@@ -58,9 +49,7 @@ export const mainListItems = (
         </ListItemButton>
 
         <ListItemButton
-            onClick={() => {
-                Router.push('/requests')
-            }}
+            href='/requests'
         >
             <ListItemIcon>
                 <RequestPageIcon />
@@ -69,9 +58,7 @@ export const mainListItems = (
         </ListItemButton>
 
         <ListItemButton
-            onClick={() => {
-                Router.push('/providers')
-            }}
+            href='/providers'
         >
             <ListItemIcon>
                 <ContactsIcon />
@@ -85,15 +72,12 @@ export const mainListItems = (
 export const secondaryListItems = (
     <React.Fragment>
         <ListItemButton
-            onClick={() => {
-                Router.push('/config')
-            }}
+            href='/config'
         >
             <ListItemIcon>
                 <SettingsIcon />
             </ListItemIcon>
             <ListItemText primary="Configuración" />
         </ListItemButton>
-
     </React.Fragment>
 );
