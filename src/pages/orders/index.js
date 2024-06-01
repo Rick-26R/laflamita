@@ -3,10 +3,8 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Head from 'next/head';
 import MenuDash from '@/modules/MenuDash';
-import ContentAdmin from '@/modules/ContentAdmin';
-import ContentUser from '@/modules/ContentUser';
 
-export default function Orders() {
+export default function IndexOrders() {
     const [user, setUser] = React.useState('admin');
 
     return (
