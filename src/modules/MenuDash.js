@@ -162,10 +162,6 @@ export default function MenuDash(props) {
                 <List component="nav">
                     {mainListItems}
                 </List>
-                <Divider />
-                <List component="nav">
-                    {secondaryListItems}
-                </List>
             </Drawer>
         </>
     )

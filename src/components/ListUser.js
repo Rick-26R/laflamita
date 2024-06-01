@@ -68,16 +68,3 @@ export const mainListItems = (
 
     </React.Fragment>
 );
-
-export const secondaryListItems = (
-    <React.Fragment>
-        <ListItemButton
-            href='/config'
-        >
-            <ListItemIcon>
-                <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Configuración" />
-        </ListItemButton>
-    </React.Fragment>
-);
