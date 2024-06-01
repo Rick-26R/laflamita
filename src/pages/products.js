@@ -1,5 +1,5 @@
 import { Container, Grid, Typography } from '@mui/material';
-import ProductCard from '../cmp/compras'; // Mantenemos el import existente
+import ProductCard from '@/components/ProductCard'; // Mantenemos el import existente
 
 const ComprasPage = () => {
   const products = [
