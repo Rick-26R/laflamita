@@ -14,6 +14,8 @@ import Badge from '@mui/material/Badge';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Router from 'next/router';
+import { mainListItems, secondaryListItems } from '../components/ListUser';
+
 
 const drawerWidth = 240;
 
@@ -98,7 +100,7 @@ export default function MenuDash(props) {
                         noWrap
                         sx={{ flexGrow: 1 }}
                     >
-                        Dashboard
+                        {props.title}
                     </Typography>
                     <IconButton onClick={handleMenuOpen}>
                         <Badge>
@@ -158,11 +160,11 @@ export default function MenuDash(props) {
                 </Toolbar>
                 <Divider />
                 <List component="nav">
-                    {props.main}
+                    {mainListItems}
                 </List>
                 <Divider />
                 <List component="nav">
-                    {props.secondary}
+                    {secondaryListItems}
                 </List>
             </Drawer>
         </>
