@@ -94,14 +94,8 @@ export default function Home() {
               <Button variant="contained" color="primary" fullWidth style={{ marginTop: '16px' }} onClick={borrar}>
                 Vaciar carrito
               </Button>
-            </Box>
-            <Box border={1} borderColor="grey.400" borderRadius="8px" padding="16px" style={{ marginTop: '16px' }}>
-              <Typography variant="h6">Metodos de entrega</Typography>
               <Button variant="contained" color="primary" fullWidth style={{ marginTop: '16px' }} href='/Success'>
-                Recolectar en tienda
-              </Button>
-              <Button variant="contained" color="primary" fullWidth style={{ marginTop: '16px' }} href='/envio'>
-                Hacer envio a domicilio
+                Confirmar compra
               </Button>
             </Box>
           </Grid>
