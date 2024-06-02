@@ -51,7 +51,7 @@ const rows = [
 ];
 
 const rowsPerPageOptions = rows.map((row, index) => {
-    if (index % 5 === 0 && index !== 0) {
+    if (index % 5 === 0 && index !== 0 && index <= 25) {
         return index;
     }
 }).filter((row) => row !== undefined);
