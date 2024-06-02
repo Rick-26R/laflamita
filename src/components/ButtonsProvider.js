@@ -28,7 +28,7 @@ export function Actions(props) {
                     console.log('Imprimir');
                 }}
             >
-                <Tooltip title="Editar tarjeta">
+                <Tooltip title="Editar proveedor">
                     <Edit
                         sx={{
                             color: amber[900]
