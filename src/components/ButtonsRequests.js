@@ -1,8 +1,8 @@
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { red, green, blue, grey, amber } from '@mui/material/colors';
-import { Delete, Check, Visibility, LocalPrintshop, Edit } from '@mui/icons-material';
+import { red, blue, amber } from '@mui/material/colors';
+import { Visibility, Edit, Cancel } from '@mui/icons-material';
 
 export function Actions(props) {
     return (
@@ -13,7 +13,7 @@ export function Actions(props) {
                     console.log('Ver');
                 }}
             >
-                <Tooltip title="Ver proveedor">
+                <Tooltip title="Ver solicitud">
                     <Visibility
                         sx={{
                             color: blue[900]
@@ -28,7 +28,7 @@ export function Actions(props) {
                     console.log('Imprimir');
                 }}
             >
-                <Tooltip title="Editar proveedor">
+                <Tooltip title="Editar solicitud">
                     <Edit
                         sx={{
                             color: amber[900]
@@ -40,11 +40,11 @@ export function Actions(props) {
             <IconButton
                 aria-label="delete"
                 onClick={() => {
-                    console.log('Eliminar');
+                    console.log('Cancelar');
                 }}
             >
-                <Tooltip title="Eliminar proveedor">
-                    <Delete
+                <Tooltip title="Cancelar solicitud">
+                    <Cancel
                         sx={{
                             color: red[900]
                         }}

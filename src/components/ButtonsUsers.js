@@ -1,8 +1,8 @@
 import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { red, green, blue, grey, amber } from '@mui/material/colors';
-import { Delete, Check, Visibility, Block, LocalPrintshop, Edit } from '@mui/icons-material';
+import { red, blue, amber } from '@mui/material/colors';
+import { Visibility, Block, Edit } from '@mui/icons-material';
 
 export function Actions(props) {
     return (
