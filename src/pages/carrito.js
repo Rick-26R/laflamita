@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Container, Grid, Card, CardContent, CardMedia, Typography, Button, Box, IconButton } from '@mui/material';
 import { CssBaseline } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -28,6 +28,10 @@ export default function Home() {
   };
 
   const subtotal = cartItems.reduce((total, item) => total + item.price * quantities[item.id], 0);
+  const borrar = () => {
+    setCartItems([]);
+    setQuantities({});
+  };
 
   return (
     <>
@@ -84,8 +88,20 @@ export default function Home() {
             <Box border={1} borderColor="grey.400" borderRadius="8px" padding="16px">
               <Typography variant="h6">Subtotal ({cartItems.length} productos):</Typography>
               <Typography variant="h5">${subtotal.toFixed(2)}</Typography>
+              <Button variant="contained" color="primary" href='/products' fullWidth style={{ marginTop: '16px' }}>
+                Seguir comprando
+              </Button>
+              <Button variant="contained" color="primary" fullWidth style={{ marginTop: '16px' }} onClick={borrar}>
+                Vaciar carrito
+              </Button>
+            </Box>
+            <Box border={1} borderColor="grey.400" borderRadius="8px" padding="16px" style={{ marginTop: '16px' }}>
+              <Typography variant="h6">Metodos de entrega</Typography>
               <Button variant="contained" color="primary" fullWidth style={{ marginTop: '16px' }}>
-                Proceder al pago
+                Recolectar en tienda
+              </Button>
+              <Button variant="contained" color="primary" fullWidth style={{ marginTop: '16px' }}>
+                Hacer envio a domicilio
               </Button>
             </Box>
           </Grid>
