@@ -13,8 +13,8 @@ import { visuallyHidden } from '@mui/utils';
 import Title from './Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
-import { ButtonsNotPaid } from './ButtonOrders';
-import { ButtonsPaid } from './ButtonOrders';
+import { ButtonsNotPaid } from './ButtonsOrders';
+import { ButtonsPaid } from './ButtonsOrders';
 
 function createData(id, date, name, shipTo, amount, status) {
     return { id, date, name, shipTo, amount, status };
@@ -85,11 +85,11 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-    { id: 'date', numeric: false, disablePadding: false, label: 'Date' },
-    { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
-    { id: 'shipTo', numeric: false, disablePadding: false, label: 'Ship To' },
-    { id: 'amount', numeric: true, disablePadding: false, label: 'Sale Amount' },
-    { id: 'status', numeric: false, disablePadding: false, label: 'Status' },
+    { id: 'date', numeric: false, disablePadding: false, label: 'Fecha' },
+    { id: 'name', numeric: false, disablePadding: false, label: 'Nombre' },
+    { id: 'shipTo', numeric: false, disablePadding: false, label: 'Tipo' },
+    { id: 'amount', numeric: true, disablePadding: false, label: 'Total' },
+    { id: 'status', numeric: false, disablePadding: false, label: 'Estado' },
 ];
 
 function EnhancedTableHead(props) {
