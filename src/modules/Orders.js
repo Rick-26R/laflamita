@@ -13,8 +13,8 @@ import { visuallyHidden } from '@mui/utils';
 import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
-import { ButtonsNotPaid } from '../components/ButtonsOrders';
-import { ButtonsPaid } from '../components/ButtonsOrders';
+import { ButtonsNotPaid } from '../components/buttons/ButtonsOrders';
+import { ButtonsPaid } from '../components/buttons/ButtonsOrders';
 
 function createData(id, date, name, amount, status) {
     return { id, date, name, amount, status };z

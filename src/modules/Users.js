@@ -13,7 +13,7 @@ import { visuallyHidden } from '@mui/utils';
 import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
-import { Actions } from '../components/ButtonsUsers';
+import { Actions } from '../components/buttons/ButtonsUsers';
 import { Button } from '@mui/material';
 
 function createData(id, name, mail) {
