@@ -88,14 +88,9 @@ export default function Home() {
               <Typography variant="h6">Subtotal ({cartItems.length} productos):</Typography>
               <Typography variant="h5">${subtotal.toFixed(2)}</Typography>
               <Box display="flex" flexDirection="column" gap={2}>
-                <Box display="flex">
-                  <Button variant="contained" color="primary" fullWidth style={{ marginRight: '8px', flex: '1' }} href='/products'>
-                    Seguir comprando
-                  </Button>
-                  <Button variant="contained" color="primary" fullWidth style={{ flex: '1' }} onClick={borrar}>
-                    Vaciar carrito
-                  </Button>
-                </Box>
+                <Button variant="contained" color="primary" fullWidth onClick={borrar}>
+                  Vaciar carrito
+                </Button>
                 <Button variant="contained" color="primary" fullWidth href='/Success'>
                   Confirmar compra
                 </Button>
