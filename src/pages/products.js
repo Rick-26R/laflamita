@@ -1,4 +1,5 @@
 import { Container, Grid, Typography } from '@mui/material';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import ProductCard from '@/components/ProductCard'; // Mantenemos el import existente
 
 const ComprasPage = () => {
@@ -17,11 +18,13 @@ const ComprasPage = () => {
     { id: 12, name: 'Kiwi', description: 'Kiwi fresco', price: '$1.99', imageUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRwYmmAgfpX98Sn02toRhfIFf6T0wRWMurXCA&s'}
   ];
 
-
   return (
-    <Container sx={{margin: '0 auto' }}>
-      <Typography variant="h3" component="h1" gutterBottom>
-        Productos del Supermercado
+    <Container sx={{ margin: '0 auto' }}>
+      <Typography variant="h3" component="h1" display="flex" alignItems="center" justifyContent="space-between" gutterBottom>
+        <span>Productos del Supermercado</span>
+        <a href="/carrito" style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
+          <ShoppingCartIcon sx={{ fontSize: 32, color: 'white' }} />
+        </a>
       </Typography>
       <Grid container spacing={3}>
         {products.map((product) => (
