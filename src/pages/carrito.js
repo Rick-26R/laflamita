@@ -49,7 +49,6 @@ export default function Home() {
                     <CardMedia
                       component="img"
                       height="100%"
-                      width="300"
                       image={product.imageUrl}
                       alt={product.name}
                     />
@@ -88,15 +87,19 @@ export default function Home() {
             <Box border={1} borderColor="grey.400" borderRadius="8px" padding="16px">
               <Typography variant="h6">Subtotal ({cartItems.length} productos):</Typography>
               <Typography variant="h5">${subtotal.toFixed(2)}</Typography>
-              <Button variant="contained" color="primary" href='/products' fullWidth style={{ marginTop: '16px' }}>
-                Seguir comprando
-              </Button>
-              <Button variant="contained" color="primary" fullWidth style={{ marginTop: '16px' }} onClick={borrar}>
-                Vaciar carrito
-              </Button>
-              <Button variant="contained" color="primary" fullWidth style={{ marginTop: '16px' }} href='/Success'>
-                Confirmar compra
-              </Button>
+              <Box display="flex" flexDirection="column" gap={2}>
+                <Box display="flex">
+                  <Button variant="contained" color="primary" fullWidth style={{ marginRight: '8px', flex: '1' }} href='/products'>
+                    Seguir comprando
+                  </Button>
+                  <Button variant="contained" color="primary" fullWidth style={{ flex: '1' }} onClick={borrar}>
+                    Vaciar carrito
+                  </Button>
+                </Box>
+                <Button variant="contained" color="primary" fullWidth href='/Success'>
+                  Confirmar compra
+                </Button>
+              </Box>
             </Box>
           </Grid>
         </Grid>
