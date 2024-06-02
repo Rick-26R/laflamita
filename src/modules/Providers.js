@@ -16,27 +16,26 @@ import { Search } from '@mui/icons-material';
 import { Actions } from '../components/ButtonsProvider';
 import { Button } from '@mui/material';
 
-function createData(id, name, amount) {
-    return { id, name, amount };
+function createData(id, name, amount, mail) {
+    return { id, name, amount, mail };
 }
 
 
 const rows = [
-    createData(0, 'Elvis Presley', -312.44),
-    createData(1, 'Paul McCartney', -866.99),
-    createData(2, 'Tom Scholz', -100.81),
-    createData(3, 'Michael Jackson', -654.39),
-    createData(4, 'Bruce Springsteen', -212.79),
-    createData(5, 'Whitney Houston', -150.00),
-    createData(6, 'Janis Joplin', 'Port Arthur, TX', 400.67),
-    createData(7, 'Jimi Hendrix', -820.42),
-    createData(8, 'Kurt Cobain', -732.18),
-    createData(9, 'Jim Morrison', -319.29),
-    createData(10, 'John Lennon', -912.34),
-    createData(11, 'Freddie Mercury', -615.67),
-    createData(12, 'David Bowie', -732.81),
-    createData(13, 'Prince', -501.45),
-    createData(14, 'Tina Turner', -673.12),
+    createData(0, 'Elvis Presley', -312.44, 'example@mail.com'),
+    createData(1, 'Paul McCartney', -866.99, 'example@mail.com'),
+    createData(2, 'Tom Scholz', -100.81, 'example@mail.com'),
+    createData(3, 'Michael Jackson', -654.39, 'example@mail.com'),
+    createData(4, 'Bruce Springsteen', -212.79, 'example@mail.com'),
+    createData(5, 'Whitney Houston', -150.00, 'example@mail.com'),
+    createData(7, 'Jimi Hendrix', -820.42, 'example@mail.com'),
+    createData(8, 'Kurt Cobain', -732.18, 'example@mail.com'),
+    createData(9, 'Jim Morrison', -319.29, 'example@mail.com'),
+    createData(10, 'John Lennon', -912.34, 'example@mail.com'),
+    createData(11, 'Freddie Mercury', -615.67, 'example@mail.com'),
+    createData(12, 'David Bowie', -732.81, 'example@mail.com'),
+    createData(13, 'Prince', -501.45, 'example@mail.com'),
+    createData(14, 'Tina Turner', -673.12, 'example@mail.com'),
 ];
 
 const rowsPerPageOptions = rows.map((row, index) => {
@@ -76,6 +75,7 @@ function stableSort(array, comparator) {
 const headCells = [
     { id: 'name', numeric: false, disablePadding: false, label: 'Nombre' },
     { id: 'amount', numeric: true, disablePadding: false, label: 'Total adeudado' },
+    { id: 'mail', numeric: false, disablePadding: false, label: 'Correo' },
 ];
 
 function EnhancedTableHead(props) {
@@ -133,7 +133,8 @@ export default function Providers(props) {
             setFilteredRows(
                 rows.filter((row) =>
                     row.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.amount.toString().toLowerCase().includes(searchText.toLowerCase())
+                    row.amount.toString().toLowerCase().includes(searchText.toLowerCase()) ||
+                    row.mail.toLowerCase().includes(searchText.toLowerCase())
                 )
             );
         }, 300);
@@ -215,14 +216,12 @@ export default function Providers(props) {
                                 <TableRow key={row.id}>
                                     <TableCell>{row.name}</TableCell>
                                     <TableCell align="right">{`$${row.amount}`}</TableCell>
+                                    <TableCell>{row.mail}</TableCell>
                                     <TableCell
-                                        sx={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            justifyContent: 'center',
-                                        }}
+                                        align='center'
+                                        padding='normal'
                                     >
-                                        <Actions />
+                                        <Actions id={row.id} />
                                     </TableCell>
                                 </TableRow>
                             ))}

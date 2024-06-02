@@ -217,11 +217,8 @@ export default function Users(props) {
                                     <TableCell>{row.name}</TableCell>
                                     <TableCell>{row.mail}</TableCell>
                                     <TableCell
-                                        sx={{
-                                            display: 'flex',
-                                            flexDirection: 'row',
-                                            justifyContent: 'center',
-                                        }}
+                                        align='center'
+                                        padding='normal'
                                     >
                                         <Actions />
                                     </TableCell>
