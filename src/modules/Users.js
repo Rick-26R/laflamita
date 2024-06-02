@@ -10,44 +10,33 @@ import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
-import Title from './Title';
+import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
-import { ButtonsNotPaid } from './ButtonsOrders';
-import { ButtonsPaid } from './ButtonsOrders';
+import { Actions } from '../components/ButtonsUsers';
+import { Button } from '@mui/material';
 
-function createData(id, date, name, amount, status) {
-    return { id, date, name, amount, status };
+function createData(id, name, mail) {
+    return { id, name, mail };
 }
 
 
 const rows = [
-    createData(0, '16 Mar, 2019', 'Elvis Presley', 312.44, 'Esperando pago'),
-    createData(1, '16 Mar, 2019', 'Paul McCartney', 866.99, 'Esperando pago'),
-    createData(2, '16 Mar, 2019', 'Tom Scholz', 100.81, 'Esperando pago'),
-    createData(3, '16 Mar, 2019', 'Michael Jackson', 654.39, 'Esperando pago'),
-    createData(4, '15 Mar, 2019', 'Bruce Springsteen', 212.79, 'Esperando pago'),
-    createData(5, '15 Mar, 2019', 'Whitney Houston', 150.00, 'Esperando pago'),
-    createData(6, '14 Mar, 2019', 'Janis Joplin', 400.67, 'Esperando pago'),
-    createData(7, '13 Mar, 2019', 'Jimi Hendrix', 820.42, 'Esperando pago'),
-    createData(8, '13 Mar, 2019', 'Kurt Cobain', 732.18, 'Esperando pago'),
-    createData(9, '12 Mar, 2019', 'Jim Morrison', 319.29, 'Esperando pago'),
-    createData(10, '12 Mar, 2019', 'John Lennon', 912.34, 'Esperando pago'),
-    createData(11, '11 Mar, 2019', 'Freddie Mercury', 615.67, 'Esperando pago'),
-    createData(12, '11 Mar, 2019', 'David Bowie', 732.81, 'Pagado'),
-    createData(13, '10 Mar, 2019', 'Prince Lastname', 501.45, 'Pagado'),
-    createData(14, '10 Mar, 2019', 'Tina Turner', 673.12, 'Pagado'),
-    createData(15, '09 Mar, 2019', 'Axl Rose', 342.79, 'Pagado'),
-    createData(16, '09 Mar, 2019', 'Billy Joel', 423.67, 'Pagado'),
-    createData(17, '08 Mar, 2019', 'Madonna Lastname', 678.99, 'Pagado'),
-    createData(18, '08 Mar, 2019', 'Stevie Wonder', 812.44, 'Pagado'),
-    createData(19, '07 Mar, 2019', 'Elton John', 765.67, 'Pagado'),
-    createData(20, '07 Mar, 2019', 'Bob Dylan', 541.39, 'Pagado'),
-    createData(21, '06 Mar, 2019', 'Ray Charles', 332.44, 'Pagado'),
-    createData(22, '06 Mar, 2019', 'James Brown', 292.68, 'Pagado'),
-    createData(23, '05 Mar, 2019', 'Aretha Franklin', 423.78, 'Pagado'),
-    createData(24, '05 Mar, 2019', 'Mick Jagger', 754.12, 'Pagado'),
-    createData(25, '04 Mar, 2019', 'Eric Clapton', 612.30, 'Pagado'),
+    createData(0, 'Elvis Presley', 'example@mail.com'),
+    createData(1, 'Paul McCartney', 'example@mail.com'),
+    createData(2, 'Tom Scholz', 'example@mail.com'),
+    createData(3, 'Michael Jackson', 'example@mail.com'),
+    createData(4, 'Bruce Springsteen', 'example@mail.com'),
+    createData(5, 'Whitney Houston', 'example@mail.com'),
+    createData(6, 'Janis Joplin', 'example@mail.com'),
+    createData(7, 'Jimi Hendrix', 'example@mail.com'),
+    createData(8, 'Kurt Cobain', 'example@mail.com'),
+    createData(9, 'Jim Morrison', 'example@mail.com'),
+    createData(10, 'John Lennon', 'example@mail.com'),
+    createData(11, 'Freddie Mercury', 'example@mail.com'),
+    createData(12, 'David Bowie', 'example@mail.com'),
+    createData(13, 'Prince', 'example@mail.com'),
+    createData(14, 'Tina Turner', 'example@mail.com'),
 ];
 
 const rowsPerPageOptions = rows.map((row, index) => {
@@ -85,10 +74,9 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-    { id: 'date', numeric: false, disablePadding: false, label: 'Fecha' },
     { id: 'name', numeric: false, disablePadding: false, label: 'Nombre' },
-    { id: 'amount', numeric: true, disablePadding: false, label: 'Total' },
-    { id: 'status', numeric: false, disablePadding: false, label: 'Estado' },
+    { id: 'mail', numeric: false, disablePadding: false, label: 'Correo' },
+
 ];
 
 function EnhancedTableHead(props) {
@@ -133,7 +121,7 @@ function EnhancedTableHead(props) {
 }
 
 
-export default function Orders(props) {
+export default function Users(props) {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('amount');
     const [page, setPage] = React.useState(0);
@@ -146,9 +134,7 @@ export default function Orders(props) {
             setFilteredRows(
                 rows.filter((row) =>
                     row.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.date.toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.amount.toString().toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.status.toLowerCase().includes(searchText.toLowerCase())
+                    row.amount.toString().toLowerCase().includes(searchText.toLowerCase())
                 )
             );
         }, 300);
@@ -186,8 +172,11 @@ export default function Orders(props) {
 
     return (
         <React.Fragment>
-            <Title>Ordenes Recientes</Title>
+            <Title>Usuarios</Title>
             <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
                 mb: 2,
             }}>
                 <TextField
@@ -206,6 +195,12 @@ export default function Orders(props) {
                             )
                         }}
                 />
+                <Button
+                    variant="contained"
+                    color="primary"
+                >
+                    Agregar
+                </Button>
             </Box>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 <TableContainer>
@@ -219,10 +214,8 @@ export default function Orders(props) {
                         <TableBody>
                             {visibleRows.map((row) => (
                                 <TableRow key={row.id}>
-                                    <TableCell>{row.date}</TableCell>
                                     <TableCell>{row.name}</TableCell>
-                                    <TableCell align="right">{`$${row.amount}`}</TableCell>
-                                    <TableCell>{row.status}</TableCell>
+                                    <TableCell>{row.mail}</TableCell>
                                     <TableCell
                                         sx={{
                                             display: 'flex',
@@ -230,13 +223,7 @@ export default function Orders(props) {
                                             justifyContent: 'center',
                                         }}
                                     >
-
-                                        {row.status === 'Esperando pago' ? (
-                                            <ButtonsNotPaid />
-                                        ) : (
-                                            <ButtonsPaid />
-                                        )}
-
+                                        <Actions />
                                     </TableCell>
                                 </TableRow>
                             ))}

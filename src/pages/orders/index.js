@@ -6,7 +6,7 @@ import MenuDash from '@/modules/MenuDash';
 import { Container } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Orders from '@/components/Orders';
+import Orders from '@/modules/Orders';
 import { Typography } from '@mui/material';
 import Copyright from '@/components/Copyright';
 

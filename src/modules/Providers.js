@@ -10,10 +10,11 @@ import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Paper from '@mui/material/Paper';
 import { visuallyHidden } from '@mui/utils';
-import Title from './Title';
+import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
-import { Actions } from './ButtonsProvider';
+import { Actions } from '../components/ButtonsProvider';
+import { Button } from '@mui/material';
 
 function createData(id, name, amount) {
     return { id, name, amount };
@@ -172,6 +173,9 @@ export default function Providers(props) {
         <React.Fragment>
             <Title>Proovedores</Title>
             <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
                 mb: 2,
             }}>
                 <TextField
@@ -190,6 +194,12 @@ export default function Providers(props) {
                             )
                         }}
                 />
+                <Button
+                    variant="contained"
+                    color="primary"
+                >
+                    Agregar
+                </Button>
             </Box>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 <TableContainer>

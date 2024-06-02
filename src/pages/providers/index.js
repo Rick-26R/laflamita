@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Head from 'next/head';
 import MenuDash from '@/modules/MenuDash';
-import Providers from '@/components/Providers';
+import Providers from '@/modules/Providers';
 import { Container } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';

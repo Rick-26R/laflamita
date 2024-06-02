@@ -3,7 +3,7 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Deposits from '@/components/Deposits';
-import Orders from '@/components/Orders';
+import Orders from '@/modules/Orders';
 import Chart from '@/components/Chart';
 import Title from '@/components/Title';
 import { Box } from '@mui/material';
