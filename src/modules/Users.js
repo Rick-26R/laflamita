@@ -22,7 +22,7 @@ function createData(id, name, mail) {
 
 
 const rows = [
-    createData(0, 'Elvis Presley', 'example@mail.com'),
+    createData(0, 'Elvis Presley', 'example1@mail.com'),
     createData(1, 'Paul McCartney', 'example@mail.com'),
     createData(2, 'Tom Scholz', 'example@mail.com'),
     createData(3, 'Michael Jackson', 'example@mail.com'),
@@ -134,7 +134,7 @@ export default function Users(props) {
             setFilteredRows(
                 rows.filter((row) =>
                     row.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.amount.toString().toLowerCase().includes(searchText.toLowerCase())
+                    row.mail.toLowerCase().includes(searchText.toLowerCase())
                 )
             );
         }, 300);
@@ -220,7 +220,7 @@ export default function Users(props) {
                                         align='center'
                                         padding='normal'
                                     >
-                                        <Actions id={row.id}/>
+                                        <Actions id={row.id} />
                                     </TableCell>
                                 </TableRow>
                             ))}

@@ -134,7 +134,7 @@ export default function Users(props) {
             setFilteredRows(
                 rows.filter((row) =>
                     row.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.amount.toString().toLowerCase().includes(searchText.toLowerCase())
+                    row.mail.toLowerCase().includes(searchText.toLowerCase())
                 )
             );
         }, 300);
