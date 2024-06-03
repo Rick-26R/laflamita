@@ -3,7 +3,7 @@ import { orange } from '@mui/material/colors';
 
 const orange400 = orange[400];
 
-export function  ProductCard ({ product }) {
+export default function ProductCard({ product }) {
   return (
     <Card sx={{ display: 'flex', height: '200px', boxShadow: 0 }}>
       <CardMedia
@@ -25,7 +25,7 @@ export function  ProductCard ({ product }) {
           </Typography>
         </div>
         <Button variant="contained"
-          style={{ backgroundColor: orange400, color: 'white' }}s
+          style={{ backgroundColor: orange400, color: 'white' }} s
           sx={{ alignSelf: 'flex-end', px: 1, py: 0.5 }}>
           Agregar al carrito
         </Button>
@@ -33,7 +33,9 @@ export function  ProductCard ({ product }) {
     </Card>
   );
 };
-export function ProductCardModal ({ product }) {
+
+
+export function ProductCardModal({ product }) {
   return (
     <Card sx={{ display: 'flex', height: '200px', boxShadow: 0 }}>
       <CardMedia
@@ -55,7 +57,7 @@ export function ProductCardModal ({ product }) {
           </Typography>
         </div>
         <Button variant="contained"
-          style={{ backgroundColor: orange400, color: 'white' }}s
+          style={{ backgroundColor: orange400, color: 'white' }} s
           sx={{ alignSelf: 'flex-end', px: 1, py: 0.5 }}>
           Agregar al carrito
         </Button>
