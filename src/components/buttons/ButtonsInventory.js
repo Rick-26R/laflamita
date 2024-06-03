@@ -5,7 +5,7 @@ import { red, blue, amber } from '@mui/material/colors';
 import { Visibility, Edit, Delete, Close } from '@mui/icons-material';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import ProductCard from '../ProductCard';
+import ProductCard, { ProductCardModal } from '../ProductCard';
 
 
 const style = {
@@ -64,7 +64,7 @@ export function Actions(props) {
                     >
                         <Close />
                     </IconButton>
-                    <ProductCard product={product} />
+                    <ProductCardModal product={product} />
                 </Box>
             </Modal>
 
