@@ -14,7 +14,10 @@ import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
 import { Actions } from '@/components/buttons/ButtonsInventory';
-import { Chip, Button } from '@mui/material';
+import { Chip, Button, Stack, Modal, IconButton } from '@mui/material';
+import ProductForm from '@/components/forms/ProductForm';
+import { Close } from '@mui/icons-material';
+import CategoryForm from '@/components/forms/CategoryForm';
 
 function createData(id, date, expirate, name, category, amount, cost, quantity) {
     return { id, date, expirate, name, category, amount, cost, quantity };
@@ -84,6 +87,18 @@ const headCells = [
     { id: 'cost', numeric: true, disablePadding: false, label: 'Cantidad' },
 ];
 
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 550,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 5,
+};
+
 function EnhancedTableHead(props) {
     const { order, orderBy, onRequestSort } = props;
     const createSortHandler = (property) => (event) => {
@@ -133,6 +148,11 @@ export default function Inventory(props) {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchText, setSearchText] = React.useState('');
     const [filteredRows, setFilteredRows] = React.useState(rows);
+
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     React.useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -205,12 +225,45 @@ export default function Inventory(props) {
                             )
                         }}
                 />
-                <Button
-                    variant="contained"
-                    color="primary"
-                >
-                    Agregar
-                </Button>
+                <Stack direction='row' spacing={2}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        href='/inventory/add-product'
+                    >
+                        Agregar producto
+                    </Button>
+
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <IconButton
+                                aria-label="close"
+                                onClick={handleClose}
+                                sx={{
+                                    position: 'absolute',
+                                    right: 8,
+                                    top: 8
+                                }}
+                            >
+                                <Close />
+                            </IconButton>
+                            <CategoryForm />
+                        </Box>
+                    </Modal>
+
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleOpen()}
+                    >
+                        Agregar categoria
+                    </Button>
+                </Stack>
             </Box>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 <TableContainer>
@@ -262,4 +315,6 @@ export default function Inventory(props) {
             </Paper>
         </React.Fragment >
     );
+
 }
+

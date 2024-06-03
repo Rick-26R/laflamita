@@ -186,7 +186,7 @@ export default function Orders(props) {
 
     return (
         <React.Fragment>
-            <Title>Ordenes Recientes</Title>
+            <Title>Ordenes</Title>
             <Box sx={{
                 mb: 2,
             }}>
