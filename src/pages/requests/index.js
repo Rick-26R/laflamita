@@ -13,10 +13,10 @@ export default function IndexRequests() {
     return (
         <>
             <Head>
-                <title>Solicitudes</title>
+                <title>Pedidos</title>
             </Head>
             <Box sx={{ display: 'flex' }}>
-                <MenuDash title="Solicitudes" />
+                <MenuDash title="Pedidos" />
                 <Box
                     component="main"
                     sx={{

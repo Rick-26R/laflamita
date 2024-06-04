@@ -169,7 +169,7 @@ export default function Requests(props) {
 
     return (
         <React.Fragment>
-            <Title>Solicitudes</Title>
+            <Title>Pedidos</Title>
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',

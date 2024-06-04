@@ -65,7 +65,7 @@ export const mainListItems = (
             <ListItemIcon>
                 <RequestPageIcon />
             </ListItemIcon>
-            <ListItemText primary="Solicitudes" />
+            <ListItemText primary="Pedidos" />
         </ListItemButton>
 
         <ListItemButton
