@@ -73,7 +73,7 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-    { id: 'numRequest', numeric: true, disablePadding: true, label: 'Número de solicitud'},
+    { id: 'numRequest', numeric: true, disablePadding: true, label: 'Número de solicitud' },
     { id: 'amount', numeric: true, disablePadding: false, label: 'Total adeudado' },
 ];
 
@@ -132,7 +132,8 @@ export default function Requests(props) {
             setFilteredRows(
                 rows.filter((row) =>
                     row.numRequest.toString().toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.amount.toString().toLowerCase().includes(searchText.toLowerCase())                 )
+                    row.amount.toString().toLowerCase().includes(searchText.toLowerCase())
+                )
             );
         }, 300);
 
@@ -195,8 +196,9 @@ export default function Requests(props) {
                 <Button
                     variant="contained"
                     color="primary"
+                    href='/requests/new'
                 >
-                    Agregar
+                    Pedir
                 </Button>
             </Box>
             <Paper sx={{ width: '100%', mb: 2 }}>
@@ -217,7 +219,7 @@ export default function Requests(props) {
                                         align='center'
                                         padding='normal'
                                     >
-                                        <Actions id={row.id}/>
+                                        <Actions id={row.id} />
                                     </TableCell>
                                 </TableRow>
                             ))}
