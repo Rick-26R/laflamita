@@ -12,6 +12,12 @@ const categories = [
     { value: 30, label: 'Categoría 3' },
 ];
 
+const providers = [
+    { value: 10, label: 'Proveedor 1' },
+    { value: 20, label: 'Proveedor 2' },
+    { value: 30, label: 'Proveedor 3' },
+];
+
 export default function ProductForm() {
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -131,6 +137,21 @@ export default function ProductForm() {
                                 name="expirationDate"
                                 type="date"
                             />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <InputLabel id="category-label">Provedor</InputLabel>
+                            <Select
+                                fullWidth
+                                id="category"
+                                name="category"
+                                defaultValue=""
+                            >
+                                {providers.map((provider) => (
+                                    <MenuItem key={provider.value} value={provider.value}>
+                                        {provider.label}
+                                    </MenuItem>
+                                ))}
+                            </Select>
                         </Grid>
                         <Grid item xs={12}>
                             <InputLabel id="image-label">Imagen</InputLabel>
