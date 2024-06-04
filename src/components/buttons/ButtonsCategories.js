@@ -5,6 +5,7 @@ import { red, blue, amber } from '@mui/material/colors';
 import { Visibility, Edit, Delete, Close } from '@mui/icons-material';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import { CategoryFormPut } from '../forms/CategoryForm';
 
 
 const style = {
@@ -47,6 +48,7 @@ export function Actions(props) {
                     >
                         <Close />
                     </IconButton>
+                    <CategoryFormPut id={props.id} />
                 </Box>
             </Modal>
 
@@ -58,6 +60,7 @@ export function Actions(props) {
             >
                 <Tooltip title="Editar producto(s)">
                     <Edit
+                        onClick={handleOpen}
                         sx={{
                             color: amber[900]
                         }}

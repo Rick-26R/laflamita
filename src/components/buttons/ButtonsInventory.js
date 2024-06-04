@@ -6,6 +6,7 @@ import { Visibility, Edit, Delete, Close } from '@mui/icons-material';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import ProductCard, { ProductCardModal } from '../ProductCard';
+import { CategoryFormPut } from '../forms/CategoryForm';
 
 
 const style = {
@@ -28,6 +29,10 @@ export function Actions(props) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+
+    const [open1, setOpen1] = React.useState(false);
+    const handleOpen1 = () => setOpen1(true);
+    const handleClose1 = () => setOpen1(false);
 
     return (
         <>
@@ -68,6 +73,28 @@ export function Actions(props) {
                 </Box>
             </Modal>
 
+            <Modal
+                open={open1}
+                onClose={handleClose1}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleClose1}
+                        sx={{
+                            position: 'absolute',
+                            right: 8,
+                            top: 8
+                        }}
+                    >
+                        <Close />
+                    </IconButton>
+                    <CategoryFormPut id={props.id} />
+                </Box>
+            </Modal>
+
             <IconButton
                 aria-label="print"
                 onClick={() => {
@@ -79,6 +106,7 @@ export function Actions(props) {
                         sx={{
                             color: amber[900]
                         }}
+                        onClick={handleOpen1}
                     />
                 </Tooltip>
             </IconButton>
