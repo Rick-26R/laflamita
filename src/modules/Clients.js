@@ -13,7 +13,7 @@ import { visuallyHidden } from '@mui/utils';
 import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
-import { Actions } from '../components/ButtonsClient';
+import { Actions } from '../components/buttons/ButtonsClient';
 import { Button } from '@mui/material';
 
 function createData(id, name, mail) {
@@ -134,7 +134,7 @@ export default function Users(props) {
             setFilteredRows(
                 rows.filter((row) =>
                     row.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.amount.toString().toLowerCase().includes(searchText.toLowerCase())
+                    row.mail.toLowerCase().includes(searchText.toLowerCase())
                 )
             );
         }, 300);

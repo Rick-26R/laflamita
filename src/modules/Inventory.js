@@ -13,41 +13,34 @@ import { visuallyHidden } from '@mui/utils';
 import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
-import { ButtonsNotPaid } from '../components/buttons/ButtonsOrders';
-import { ButtonsPaid } from '../components/buttons/ButtonsOrders';
+import { Actions } from '@/components/buttons/ButtonsInventory';
+import { Chip, Button, Stack, Modal, IconButton } from '@mui/material';
+import ProductForm from '@/components/forms/ProductForm';
+import { Close } from '@mui/icons-material';
+import CategoryForm from '@/components/forms/CategoryForm';
 
-function createData(id, date, name, amount, status) {
-    return { id, date, name, amount, status };z
+function createData(id, date, expirate, name, category, amount, cost, quantity) {
+    return { id, date, expirate, name, category, amount, cost, quantity };
 }
 
 
 const rows = [
-    createData(0, '16 Mar, 2019', 'Elvis Presley', 312.44, 'Esperando pago'),
-    createData(1, '16 Mar, 2019', 'Paul McCartney', 866.99, 'Esperando pago'),
-    createData(2, '16 Mar, 2019', 'Tom Scholz', 100.81, 'Esperando pago'),
-    createData(3, '16 Mar, 2019', 'Michael Jackson', 654.39, 'Esperando pago'),
-    createData(4, '15 Mar, 2019', 'Bruce Springsteen', 212.79, 'Esperando pago'),
-    createData(5, '15 Mar, 2019', 'Whitney Houston', 150.00, 'Esperando pago'),
-    createData(6, '14 Mar, 2019', 'Janis Joplin', 400.67, 'Esperando pago'),
-    createData(7, '13 Mar, 2019', 'Jimi Hendrix', 820.42, 'Esperando pago'),
-    createData(8, '13 Mar, 2019', 'Kurt Cobain', 732.18, 'Esperando pago'),
-    createData(9, '12 Mar, 2019', 'Jim Morrison', 319.29, 'Esperando pago'),
-    createData(10, '12 Mar, 2019', 'John Lennon', 912.34, 'Esperando pago'),
-    createData(11, '11 Mar, 2019', 'Freddie Mercury', 615.67, 'Esperando pago'),
-    createData(12, '11 Mar, 2019', 'David Bowie', 732.81, 'Pagado'),
-    createData(13, '10 Mar, 2019', 'Prince Lastname', 501.45, 'Pagado'),
-    createData(14, '10 Mar, 2019', 'Tina Turner', 673.12, 'Pagado'),
-    createData(15, '09 Mar, 2019', 'Axl Rose', 342.79, 'Pagado'),
-    createData(16, '09 Mar, 2019', 'Billy Joel', 423.67, 'Pagado'),
-    createData(17, '08 Mar, 2019', 'Madonna Lastname', 678.99, 'Pagado'),
-    createData(18, '08 Mar, 2019', 'Stevie Wonder', 812.44, 'Pagado'),
-    createData(19, '07 Mar, 2019', 'Elton John', 765.67, 'Pagado'),
-    createData(20, '07 Mar, 2019', 'Bob Dylan', 541.39, 'Pagado'),
-    createData(21, '06 Mar, 2019', 'Ray Charles', 332.44, 'Pagado'),
-    createData(22, '06 Mar, 2019', 'James Brown', 292.68, 'Pagado'),
-    createData(23, '05 Mar, 2019', 'Aretha Franklin', 423.78, 'Pagado'),
-    createData(24, '05 Mar, 2019', 'Mick Jagger', 754.12, 'Pagado'),
-    createData(25, '04 Mar, 2019', 'Eric Clapton', 612.30, 'Pagado'),
+    createData(0, '16/09/2021', '16/09/2022', 'Producto 1', 'Categoria 1', 100, 150, 10),
+    createData(1, '16/09/2021', '16/09/2022', 'Producto 2', 'Categoria 1', 100, 150, 10),
+    createData(2, '16/09/2021', '16/09/2022', 'Producto 3', 'Categoria 2', 100, 150, 10),
+    createData(3, '16/09/2021', '16/09/2022', 'Producto 4', 'Categoria 2', 100, 150, 10),
+    createData(4, '16/09/2021', '16/09/2022', 'Producto 5', 'Categoria 3', 100, 150, 10),
+    createData(5, '16/09/2021', '16/09/2022', 'Producto 6', 'Categoria 3', 100, 150, 10),
+    createData(6, '16/09/2021', '16/09/2022', 'Producto 7', 'Categoria 4', 100, 150, 10),
+    createData(7, '16/09/2021', '16/09/2022', 'Producto 8', 'Categoria 4', 100, 150, 10),
+    createData(8, '16/09/2021', '16/09/2022', 'Producto 9', 'Categoria 5', 100, 150, 10),
+    createData(9, '16/09/2021', '16/09/2022', 'Producto 10', 'Categoria 5', 100, 150, 10),
+    createData(10, '16/09/2021', '16/09/2022', 'Producto 11', 'Categoria 6', 100, 150, 10),
+    createData(11, '16/09/2021', '16/09/2022', 'Producto 12', 'Categoria 6', 100, 150, 10),
+    createData(12, '16/09/2021', '16/09/2022', 'Producto 13', 'Categoria 7', 100, 150, 10),
+    createData(13, '16/09/2021', '16/09/2022', 'Producto 14', 'Categoria 7', 100, 150, 10),
+    createData(14, '16/09/2021', '16/09/2022', 'Producto 15', 'Categoria 8', 100, 150, 10),
+    createData(15, '16/09/2021', '16/09/2022', 'Producto 16', 'Categoria 8', 100, 150, 10),
 ];
 
 const rowsPerPageOptions = rows.map((row, index) => {
@@ -85,11 +78,26 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-    { id: 'date', numeric: false, disablePadding: false, label: 'Fecha' },
+    { id: 'date', numeric: false, disablePadding: false, label: 'Fecha de ingreso' },
+    { id: 'expirate', numeric: false, disablePadding: false, label: 'Fecha de vencimiento' },
     { id: 'name', numeric: false, disablePadding: false, label: 'Nombre' },
-    { id: 'amount', numeric: true, disablePadding: false, label: 'Total' },
-    { id: 'status', numeric: false, disablePadding: false, label: 'Estado' },
+    { id: 'category', numeric: false, disablePadding: false, label: 'Categoria' },
+    { id: 'amount', numeric: true, disablePadding: false, label: 'Costo' },
+    { id: 'quantity', numeric: true, disablePadding: false, label: 'Costo al publico' },
+    { id: 'cost', numeric: true, disablePadding: false, label: 'Cantidad' },
 ];
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 550,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 5,
+};
 
 function EnhancedTableHead(props) {
     const { order, orderBy, onRequestSort } = props;
@@ -133,7 +141,7 @@ function EnhancedTableHead(props) {
 }
 
 
-export default function Orders(props) {
+export default function Inventory(props) {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('amount');
     const [page, setPage] = React.useState(0);
@@ -141,14 +149,22 @@ export default function Orders(props) {
     const [searchText, setSearchText] = React.useState('');
     const [filteredRows, setFilteredRows] = React.useState(rows);
 
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     React.useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
             setFilteredRows(
                 rows.filter((row) =>
                     row.name.toLowerCase().includes(searchText.toLowerCase()) ||
+                    row.category.toLowerCase().includes(searchText.toLowerCase()) ||
                     row.date.toLowerCase().includes(searchText.toLowerCase()) ||
                     row.amount.toString().toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.status.toLowerCase().includes(searchText.toLowerCase())
+                    row.expirate.toLowerCase().includes(searchText.toLowerCase()) ||
+                    row.quantity.toString().toLowerCase().includes(searchText.toLowerCase()) ||
+                    row.cost.toString().toLowerCase().includes(searchText.toLowerCase())
                 )
             );
         }, 300);
@@ -186,8 +202,11 @@ export default function Orders(props) {
 
     return (
         <React.Fragment>
-            <Title>Ordenes</Title>
+            <Title>Inventario</Title>
             <Box sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
                 mb: 2,
             }}>
                 <TextField
@@ -206,6 +225,38 @@ export default function Orders(props) {
                             )
                         }}
                 />
+                <Stack direction='row' spacing={2}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        href='/inventory/add-product'
+                    >
+                        Agregar producto
+                    </Button>
+
+                    <Modal
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                    >
+                        <Box sx={style}>
+                            <IconButton
+                                aria-label="close"
+                                onClick={handleClose}
+                                sx={{
+                                    position: 'absolute',
+                                    right: 8,
+                                    top: 8
+                                }}
+                            >
+                                <Close />
+                            </IconButton>
+                            <CategoryForm />
+                        </Box>
+                    </Modal>
+                    
+                </Stack>
             </Box>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 <TableContainer>
@@ -220,20 +271,25 @@ export default function Orders(props) {
                             {visibleRows.map((row) => (
                                 <TableRow key={row.id}>
                                     <TableCell>{row.date}</TableCell>
+                                    <TableCell>{row.expirate}</TableCell>
                                     <TableCell>{row.name}</TableCell>
+                                    <TableCell>
+                                        <Chip
+                                            label={row.category}
+                                            color="secondary"
+                                            variant="outlined"
+                                            size='small'
+                                        />
+                                    </TableCell>
                                     <TableCell align="right">{`$${row.amount}`}</TableCell>
-                                    <TableCell>{row.status}</TableCell>
+                                    <TableCell align="right">{`$${row.cost}`}</TableCell>
+                                    <TableCell align="right">{row.quantity}</TableCell>
                                     <TableCell
                                         align='center'
                                         padding='normal'
                                     >
 
-                                        {row.status === 'Esperando pago' ? (
-                                            <ButtonsNotPaid id={row.id}/>
-                                        ) : (
-                                            <ButtonsPaid id={row.id}/>
-                                        )}
-
+                                        <Actions id={row.id} />
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -252,4 +308,6 @@ export default function Orders(props) {
             </Paper>
         </React.Fragment >
     );
+
 }
+

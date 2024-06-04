@@ -2,7 +2,7 @@ import React from 'react';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import { red, blue, amber } from '@mui/material/colors';
-import { Visibility, Block, Edit } from '@mui/icons-material';
+import { Visibility, Block, Edit, Delete } from '@mui/icons-material';
 
 export function Actions(props) {
     return (
@@ -38,12 +38,12 @@ export function Actions(props) {
             </IconButton>
 
             <IconButton
-                aria-label="delete"
+                aria-label="block"
                 onClick={() => {
-                    console.log('Eliminar');
+                    console.log('Bloquear');
                 }}
             >
-                <Tooltip title="Eliminar Usuario">
+                <Tooltip title="Bloquear Usuario">
                     <Block
                         sx={{
                             color: red[900]
@@ -51,6 +51,22 @@ export function Actions(props) {
                     />
                 </Tooltip>
             </IconButton>
+
+            <IconButton
+                aria-label="delete"
+                onClick={() => {
+                    console.log('Eliminar');
+                }}
+            >
+                <Tooltip title="Eliminar Usuario">
+                    <Delete
+                        sx={{
+                            color: red[900]
+                        }}
+                    />
+                </Tooltip>
+            </IconButton>
+
 
         </>
     )

@@ -4,19 +4,19 @@ import Toolbar from '@mui/material/Toolbar';
 import Head from 'next/head';
 import MenuDash from '@/modules/MenuDash';
 import { Container, Grid, Paper } from '@mui/material';
-import Requests from '@/modules/Requests';
 import Copyright from '@/components/Copyright';
+import MakeRequestComponent from '@/modules/MakeRequest';
 
-export default function IndexRequests() {
+export default function MakeRequest() {
     const [user, setUser] = React.useState('admin');
 
     return (
         <>
             <Head>
-                <title>Pedidos</title>
+                <title>Realizar pedido</title>
             </Head>
             <Box sx={{ display: 'flex' }}>
-                <MenuDash title="Pedidos" />
+                <MenuDash title="Realizar pedido" />
                 <Box
                     component="main"
                     sx={{
@@ -36,7 +36,7 @@ export default function IndexRequests() {
                             {/* Recent Orders */}
                             <Grid item xs={12}>
                                 <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                                    <Requests />
+                                    <MakeRequestComponent />
                                 </Paper>
                             </Grid>
                         </Grid>
