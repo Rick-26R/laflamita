@@ -9,20 +9,7 @@ export default function CategoryForm() {
         const data = new FormData(event.currentTarget);
         console.log({
             name: data.get('name'),
-            cost: data.get('cost'),
-            costPublic: data.get('costpublic'),
-            quantity: data.get('quantity'),
-            category: data.get('category'),
-            expirationDate: data.get('expirationDate'),
-            image: data.get('image'),
         });
-
-        // Convertir la imagen a base64
-        const reader = new FileReader();
-        reader.readAsDataURL(data.get('image'));
-        reader.onload = function () {
-            console.log(reader.result);
-        };
     };
     return (
         <>

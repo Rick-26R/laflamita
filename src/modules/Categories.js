@@ -13,34 +13,20 @@ import { visuallyHidden } from '@mui/utils';
 import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
-import { Actions } from '@/components/buttons/ButtonsInventory';
+import { Actions } from '@/components/buttons/ButtonsCategories';
 import { Chip, Button, Stack, Modal, IconButton } from '@mui/material';
-import ProductForm from '@/components/forms/ProductForm';
 import { Close } from '@mui/icons-material';
 import CategoryForm from '@/components/forms/CategoryForm';
 
-function createData(id, date, expirate, name, category, amount, cost, quantity) {
-    return { id, date, expirate, name, category, amount, cost, quantity };
+function createData(id, date, category) {
+    return { id, date, category };
 }
 
 
 const rows = [
-    createData(0, '16/09/2021', '16/09/2022', 'Producto 1', 'Categoria 1', 100, 150, 10),
-    createData(1, '16/09/2021', '16/09/2022', 'Producto 2', 'Categoria 1', 100, 150, 10),
-    createData(2, '16/09/2021', '16/09/2022', 'Producto 3', 'Categoria 2', 100, 150, 10),
-    createData(3, '16/09/2021', '16/09/2022', 'Producto 4', 'Categoria 2', 100, 150, 10),
-    createData(4, '16/09/2021', '16/09/2022', 'Producto 5', 'Categoria 3', 100, 150, 10),
-    createData(5, '16/09/2021', '16/09/2022', 'Producto 6', 'Categoria 3', 100, 150, 10),
-    createData(6, '16/09/2021', '16/09/2022', 'Producto 7', 'Categoria 4', 100, 150, 10),
-    createData(7, '16/09/2021', '16/09/2022', 'Producto 8', 'Categoria 4', 100, 150, 10),
-    createData(8, '16/09/2021', '16/09/2022', 'Producto 9', 'Categoria 5', 100, 150, 10),
-    createData(9, '16/09/2021', '16/09/2022', 'Producto 10', 'Categoria 5', 100, 150, 10),
-    createData(10, '16/09/2021', '16/09/2022', 'Producto 11', 'Categoria 6', 100, 150, 10),
-    createData(11, '16/09/2021', '16/09/2022', 'Producto 12', 'Categoria 6', 100, 150, 10),
-    createData(12, '16/09/2021', '16/09/2022', 'Producto 13', 'Categoria 7', 100, 150, 10),
-    createData(13, '16/09/2021', '16/09/2022', 'Producto 14', 'Categoria 7', 100, 150, 10),
-    createData(14, '16/09/2021', '16/09/2022', 'Producto 15', 'Categoria 8', 100, 150, 10),
-    createData(15, '16/09/2021', '16/09/2022', 'Producto 16', 'Categoria 8', 100, 150, 10),
+    createData(0, '2021-10-01', 'Alimentos'),
+    createData(1, '2021-10-01', 'Lacteos'),
+    createData(2, '2021-10-01', 'Bebidas'),
 ];
 
 const rowsPerPageOptions = rows.map((row, index) => {
@@ -78,13 +64,8 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-    { id: 'date', numeric: false, disablePadding: false, label: 'Fecha de ingreso' },
-    { id: 'expirate', numeric: false, disablePadding: false, label: 'Fecha de vencimiento' },
-    { id: 'name', numeric: false, disablePadding: false, label: 'Nombre' },
+    { id: 'date', numeric: false, disablePadding: false, label: 'Ultima actualización' },
     { id: 'category', numeric: false, disablePadding: false, label: 'Categoria' },
-    { id: 'amount', numeric: true, disablePadding: false, label: 'Costo' },
-    { id: 'quantity', numeric: true, disablePadding: false, label: 'Costo al publico' },
-    { id: 'cost', numeric: true, disablePadding: false, label: 'Cantidad' },
 ];
 
 const style = {
@@ -141,7 +122,7 @@ function EnhancedTableHead(props) {
 }
 
 
-export default function Inventory(props) {
+export default function Categories(props) {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('amount');
     const [page, setPage] = React.useState(0);
@@ -158,13 +139,8 @@ export default function Inventory(props) {
         const delayDebounceFn = setTimeout(() => {
             setFilteredRows(
                 rows.filter((row) =>
-                    row.name.toLowerCase().includes(searchText.toLowerCase()) ||
                     row.category.toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.date.toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.amount.toString().toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.expirate.toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.quantity.toString().toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.cost.toString().toLowerCase().includes(searchText.toLowerCase())
+                    row.date.toLowerCase().includes(searchText.toLowerCase())
                 )
             );
         }, 300);
@@ -202,7 +178,7 @@ export default function Inventory(props) {
 
     return (
         <React.Fragment>
-            <Title>Inventario</Title>
+            <Title>Categorias</Title>
             <Box sx={{
                 display: 'flex',
                 alignItems: 'center',
@@ -226,13 +202,6 @@ export default function Inventory(props) {
                         }}
                 />
                 <Stack direction='row' spacing={2}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        href='/inventory/add-product'
-                    >
-                        Agregar producto
-                    </Button>
 
                     <Modal
                         open={open}
@@ -255,7 +224,14 @@ export default function Inventory(props) {
                             <CategoryForm />
                         </Box>
                     </Modal>
-                    
+
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={() => handleOpen()}
+                    >
+                        Agregar categoria
+                    </Button>
                 </Stack>
             </Box>
             <Paper sx={{ width: '100%', mb: 2 }}>
@@ -271,8 +247,6 @@ export default function Inventory(props) {
                             {visibleRows.map((row) => (
                                 <TableRow key={row.id}>
                                     <TableCell>{row.date}</TableCell>
-                                    <TableCell>{row.expirate}</TableCell>
-                                    <TableCell>{row.name}</TableCell>
                                     <TableCell>
                                         <Chip
                                             label={row.category}
@@ -281,9 +255,6 @@ export default function Inventory(props) {
                                             size='small'
                                         />
                                     </TableCell>
-                                    <TableCell align="right">{`$${row.amount}`}</TableCell>
-                                    <TableCell align="right">{`$${row.cost}`}</TableCell>
-                                    <TableCell align="right">{row.quantity}</TableCell>
                                     <TableCell
                                         align='center'
                                         padding='normal'
