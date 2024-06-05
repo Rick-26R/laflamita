@@ -1,6 +1,6 @@
 import { Container, Grid, Typography } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import ProductCard from '@/components/ProductCard'; // Mantenemos el import existente
+import ProductCard from '@/components/ProductCard'; 
 
 const ComprasPage = () => {
   const products = [
