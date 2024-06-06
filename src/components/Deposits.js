@@ -13,7 +13,7 @@ export default function Deposits() {
                     $3,024.00
                 </Typography>
                 <Typography color="text.secondary" sx={{ flex: 1 }}>
-                    on 15 March, 2019
+                    15 de Marzo, 2019
                 </Typography>
             </Box>
         </React.Fragment>

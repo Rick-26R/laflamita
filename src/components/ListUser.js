@@ -14,7 +14,7 @@ import CategoryIcon from '@mui/icons-material/Category';
 export const mainListItems = (
     <React.Fragment>
         <ListItemButton
-            href='/dashboard'
+            href='/admin/dashboard'
         >
             <ListItemIcon>
                 <DashboardIcon />
@@ -23,7 +23,7 @@ export const mainListItems = (
         </ListItemButton>
 
         <ListItemButton
-            href='/inventory'
+            href='/admin/inventory'
         >
             <ListItemIcon>
                 <CategoryIcon />
@@ -33,7 +33,7 @@ export const mainListItems = (
 
 
         <ListItemButton
-            href='/orders'
+            href='/admin/orders'
         >
             <ListItemIcon>
                 <ShoppingCartIcon />
@@ -42,7 +42,7 @@ export const mainListItems = (
         </ListItemButton>
 
         <ListItemButton
-            href='/clients'
+            href='/admin/clients'
         >
             <ListItemIcon>
                 <PeopleIcon />
@@ -51,7 +51,7 @@ export const mainListItems = (
         </ListItemButton>
 
         <ListItemButton
-            href='/users'
+            href='/admin/users'
         >
             <ListItemIcon>
                 <AssignmentIndIcon />
@@ -60,7 +60,7 @@ export const mainListItems = (
         </ListItemButton>
 
         <ListItemButton
-            href='/requests'
+            href='/admin/requests'
         >
             <ListItemIcon>
                 <RequestPageIcon />
@@ -69,7 +69,7 @@ export const mainListItems = (
         </ListItemButton>
 
         <ListItemButton
-            href='/providers'
+            href='/admin/providers'
         >
             <ListItemIcon>
                 <ContactsIcon />
