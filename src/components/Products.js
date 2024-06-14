@@ -23,7 +23,7 @@ const Products = () => {
         <Container sx={{ margin: '0 auto' }}>
             <Typography variant="h3" component="h1" display="flex" alignItems="center" justifyContent="space-between" gutterBottom>
                 <Title>Productos del Supermercado</Title>
-                <a href="/carrito" style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
+                <a href="../client/carrito" style={{ display: 'flex', alignItems: 'center', marginTop: 'auto' }}>
                     <ShoppingCartIcon sx={{ fontSize: 32, color: 'white' }} />
                 </a>
             </Typography>

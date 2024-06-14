@@ -59,7 +59,7 @@ const Success = () => {
                         {code}
                     </Typography>
                     <Box textAlign="center">
-                        <Button variant="contained" color="primary" href='/products'>
+                        <Button variant="contained" color="primary" href='../client/products'>
                             Confirmar
                         </Button>
                     </Box>

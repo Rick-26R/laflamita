@@ -4,8 +4,14 @@ import Toolbar from '@mui/material/Toolbar';
 import Head from 'next/head';
 import MenuDash from '@/modules/MenuDash';
 import Products from '@/components/Products';
+import { useEffect, useState } from 'react';
 
-export default function products() {
+export default function ProductsPage() {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   return (
     <>
@@ -27,7 +33,7 @@ export default function products() {
           }}
         >
           <Toolbar />
-          <Products />
+          {isMounted && <Products />}
         </Box>
       </Box>
     </>
