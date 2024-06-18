@@ -229,7 +229,7 @@ export default function Inventory(props) {
                     <Button
                         variant="contained"
                         color="primary"
-                        href='/inventory/add-product'
+                        href='/admin/inventory/add-product'
                     >
                         Agregar producto
                     </Button>

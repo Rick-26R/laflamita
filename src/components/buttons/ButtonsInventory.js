@@ -7,6 +7,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import ProductCard, { ProductCardModal } from '../ProductCard';
 import { CategoryFormPut } from '../forms/CategoryForm';
+import ProductFormUpdate from '../forms/ProductFormUpdate';
 
 
 const style = {
@@ -91,7 +92,7 @@ export function Actions(props) {
                     >
                         <Close />
                     </IconButton>
-                    <CategoryFormPut id={props.id} />
+                    <ProductFormUpdate id={props.id}/>
                 </Box>
             </Modal>
 

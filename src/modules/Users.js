@@ -15,6 +15,10 @@ import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
 import { Actions } from '../components/buttons/ButtonsUsers';
 import { Button } from '@mui/material';
+import { Chip, Stack, Modal, IconButton } from '@mui/material';
+import { Close } from '@mui/icons-material';
+import UsersForm from '@/components/forms/UsersForm';
+
 
 function createData(id, name, mail) {
     return { id, name, mail };
@@ -129,6 +133,10 @@ export default function Users(props) {
     const [searchText, setSearchText] = React.useState('');
     const [filteredRows, setFilteredRows] = React.useState(rows);
 
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     React.useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
             setFilteredRows(
@@ -170,6 +178,18 @@ export default function Users(props) {
         [filteredRows, order, orderBy, page, rowsPerPage],
     );
 
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 550,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 5,
+    };
+
     return (
         <React.Fragment>
             <Title>Usuarios</Title>
@@ -195,12 +215,38 @@ export default function Users(props) {
                             )
                         }}
                 />
+
+                
+
                 <Button
                     variant="contained"
                     color="primary"
+                    onClick={handleOpen}
                 >
                     Agregar
                 </Button>
+                
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <IconButton
+                            aria-label="close"
+                            onClick={handleClose}
+                            sx={{
+                                position: 'absolute',
+                                right: 8,
+                                top: 8
+                            }}
+                        >
+                            <Close />
+                        </IconButton>
+                        <UsersForm />
+                    </Box>
+                </Modal>
             </Box>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 <TableContainer>
