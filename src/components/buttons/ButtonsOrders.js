@@ -5,6 +5,7 @@ import { red, green, blue, grey, amber } from '@mui/material/colors';
 import { Delete, Check, Visibility, LocalPrintshop, Close } from '@mui/icons-material';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import { ProductOrderModal } from '../ProductOrder';
 
 
 const style = {
@@ -23,8 +24,6 @@ const style = {
 export function ButtonsNotPaid(props) {
     return (
         <>
-
-
 
             <IconButton
                 aria-label="pay"
@@ -97,6 +96,7 @@ export function ButtonsPaid(props) {
                     >
                         <Close />
                     </IconButton>
+                    <ProductOrderModal />
                 </Box>
             </Modal>
 

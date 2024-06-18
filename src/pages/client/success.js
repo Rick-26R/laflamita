@@ -5,7 +5,7 @@ import Head from 'next/head';
 import MenuDash from '@/modules/MenuDash';
 import ContentAdmin from '@/modules/ContentAdmin';
 import ContentUser from '@/modules/ContentUser';
-import Success from '@/components/Success';
+import ProductOrder from '@/components/ProductOrder';
 
 export default function success() {
 
@@ -29,7 +29,7 @@ export default function success() {
           }}
         >
           <Toolbar />
-          <Success />
+          <ProductOrder />
         </Box>
       </Box>
     </>
