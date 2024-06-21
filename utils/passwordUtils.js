@@ -1,0 +1,25 @@
+const bcrypt = require('bcryptjs');
+
+const hashPassword = async (password) => {
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        return hashedPassword;
+    } catch (error) {
+        throw new Error('Error hashing password');
+    }
+}
+
+const comparePasswords = async (password, hashedPassword) => {
+    try {
+        const isMatch = await bcrypt.compare(password, hashedPassword);
+        if (!isMatch) {
+            throw new Error('Invalid password');
+        }
+    } catch (error) {
+        console.error('Error comparing passwords:', error);
+        throw error;
+    }
+}
+
+export { hashPassword, comparePasswords };
