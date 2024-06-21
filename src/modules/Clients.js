@@ -13,30 +13,30 @@ import { visuallyHidden } from '@mui/utils';
 import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
-import { Actions } from '../components/buttons/ButtonsClient';
+import { Blocked, NotBlocked } from '../components/buttons/ButtonsClient';
 import { Button } from '@mui/material';
 
-function createData(id, name, mail) {
-    return { id, name, mail };
+function createData(id, name, mail, isBlocked) {
+    return { id, name, mail, isBlocked };
 }
 
 
 const rows = [
-    createData(0, 'Elvis Presley', 'example@mail.com'),
-    createData(1, 'Paul McCartney', 'example@mail.com'),
-    createData(2, 'Tom Scholz', 'example@mail.com'),
-    createData(3, 'Michael Jackson', 'example@mail.com'),
-    createData(4, 'Bruce Springsteen', 'example@mail.com'),
-    createData(5, 'Whitney Houston', 'example@mail.com'),
-    createData(6, 'Janis Joplin', 'example@mail.com'),
-    createData(7, 'Jimi Hendrix', 'example@mail.com'),
-    createData(8, 'Kurt Cobain', 'example@mail.com'),
-    createData(9, 'Jim Morrison', 'example@mail.com'),
-    createData(10, 'John Lennon', 'example@mail.com'),
-    createData(11, 'Freddie Mercury', 'example@mail.com'),
-    createData(12, 'David Bowie', 'example@mail.com'),
-    createData(13, 'Prince', 'example@mail.com'),
-    createData(14, 'Tina Turner', 'example@mail.com'),
+    createData(0, 'Elvis Presley', 'example@mail.com', true),
+    createData(1, 'Paul McCartney', 'example@mail.com', true),
+    createData(2, 'Tom Scholz', 'example@mail.com', true),
+    createData(3, 'Michael Jackson', 'example@mail.com', true),
+    createData(4, 'Bruce Springsteen', 'example@mail.com', true),
+    createData(5, 'Whitney Houston', 'example@mail.com', true),
+    createData(6, 'Janis Joplin', 'example@mail.com', true),
+    createData(7, 'Jimi Hendrix', 'example@mail.com', true),
+    createData(8, 'Kurt Cobain', 'example@mail.com', false),
+    createData(9, 'Jim Morrison', 'example@mail.com', false),
+    createData(10, 'John Lennon', 'example@mail.com', false),
+    createData(11, 'Freddie Mercury', 'example@mail.com', false),
+    createData(12, 'David Bowie', 'example@mail.com', false),
+    createData(13, 'Prince', 'example@mail.com', false),
+    createData(14, 'Tina Turner', 'example@mail.com', false),
 ];
 
 const rowsPerPageOptions = rows.map((row, index) => {
@@ -195,12 +195,6 @@ export default function Users(props) {
                             )
                         }}
                 />
-                <Button
-                    variant="contained"
-                    color="primary"
-                >
-                    Agregar
-                </Button>
             </Box>
             <Paper sx={{ width: '100%', mb: 2 }}>
                 <TableContainer>
@@ -220,7 +214,7 @@ export default function Users(props) {
                                         align='center'
                                         padding='normal'
                                     >
-                                        <Actions />
+                                        {row.isBlocked ? (<Blocked id={row.id} />) : (<NotBlocked id={row.id} />)}
                                     </TableCell>
                                 </TableRow>
                             ))}
