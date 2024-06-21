@@ -3,17 +3,22 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Head from 'next/head';
 import MenuDash from '@/modules/MenuDash';
+import Clients from '@/modules/Clients';
+import { Container } from '@mui/material';
+import Grid from '@mui/material/Grid';
+import Paper from '@mui/material/Paper';
+import Copyright from '@/components/Copyright';
 
-export default function IndexRequests() {
+export default function IndexClients() {
     const [user, setUser] = React.useState('admin');
 
     return (
         <>
             <Head>
-                <title>Solicitudes</title>
+                <title>Clientes</title>
             </Head>
             <Box sx={{ display: 'flex' }}>
-                <MenuDash title="Solicitudes"/>
+                <MenuDash title="Clientes" />
                 <Box
                     component="main"
                     sx={{
@@ -26,8 +31,18 @@ export default function IndexRequests() {
                         overflow: 'auto',
                     }}
                 >
-                    {/* Contenido */}
                     <Toolbar />
+                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                        <Grid container spacing={3}>
+
+                            <Grid item xs={12}>
+                                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                                    <Clients />
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                        <Copyright sx={{ pt: 4 }} />
+                    </Container>
                 </Box>
             </Box>
         </>

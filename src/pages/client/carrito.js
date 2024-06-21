@@ -97,7 +97,7 @@ export default function Home() {
                 <Button variant="contained" color="primary" fullWidth onClick={borrar}>
                   Vaciar carrito
                 </Button>
-                <Button variant="contained" color="primary" fullWidth href='/Success'>
+                <Button variant="contained" color="primary" fullWidth href='/client/success'>
                   Confirmar compra
                 </Button>
               </Box>
