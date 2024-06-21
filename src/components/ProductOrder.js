@@ -19,7 +19,7 @@ const products = [
     },
 ];
 
-export function ProductOrder() {
+export default function ProductOrder() {
     const [code, setCode] = useState('');
 
     useEffect(() => {
