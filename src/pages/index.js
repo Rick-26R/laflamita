@@ -56,6 +56,9 @@ export default function Index() {
 
   return (
     <>
+    <head>
+      <title>Inicio de Sesión</title>
+    </head>
       <Container
         style={{
           display: 'flex',
@@ -106,7 +109,7 @@ export default function Index() {
               />
               <TextField
                 id="password-basic"
-                label="Password"
+                label="Contraseña"
                 variant="outlined"
                 type={showPassword ? 'text' : 'password'}
                 style={{
