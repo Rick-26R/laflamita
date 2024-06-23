@@ -6,6 +6,7 @@ export async function connectToDatabase() {
     try {
         const client = await MongoClient.connect(uri)
         const db = client.db('laflamita');
+        console.log('Conexión exitosa a la base de datos');
         return db;
     } catch (error) {
         console.log('Error al conectar a la base de datos:', error);
@@ -46,6 +47,20 @@ export async function findDocuments(collection, query) {
     }
 }
 
+export async function findDocument(collection, query) {
+    console.log('Buscando documento:', query);
+    console.log('En la colección:', collection);
+    try {
+        const db = await connectToDatabase();
+        const result = await db.collection(collection).findOne(query);
+        console.log(result);
+        return result;
+    } catch (error) {
+        console.log('Error al buscar documento:', error);
+        throw error;
+    }
+}
+
 export async function updateDocument(collection, query, update) {
     try {
         const db = await connectToDatabase();
@@ -67,11 +82,3 @@ export async function deleteDocument(collection, query) {
         throw error;
     }
 }
-
-connectToDatabase().then(() => {
-    console.log('Conexión exitosa a la base de datos');
-}
-).catch(() => {
-    console.log('Error al conectar a la base de datos');
-});
-
