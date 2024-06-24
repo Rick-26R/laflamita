@@ -43,7 +43,7 @@ export default function ProvidersForm() {
 
     return (
         <Container component="main" maxWidth="md">
-            <Title>Agregar usuario</Title>
+            <Title>Agregar proveedor</Title>
             <Box
                 sx={{
                     display: 'flex',
@@ -146,7 +146,7 @@ export function ProvidersFormPut(props) {
 
     return (
         <Container component="main" maxWidth="md">
-            <Title>Agregar usuario</Title>
+            <Title>Actualizar proveedor</Title>
             <Box
                 sx={{
                     display: 'flex',
