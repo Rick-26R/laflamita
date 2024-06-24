@@ -3,12 +3,14 @@ import { Button, Box, Container, TextField, IconButton, Typography, InputAdornme
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Link from 'next/link';
+import axios from 'axios';
+import Router from 'next/router';
 
 export default function Sign() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [name, setName] = useState('');
-  const [surname, setSurname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -28,10 +30,10 @@ export default function Sign() {
     setSnackbarOpen(false);
   };
 
-  const handleSignUp = (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault();
 
-    if (!name || !surname || !email || !password || !confirmPassword) {
+    if (!name || !lastname || !email || !password || !confirmPassword) {
       setSnackbarMessage('Por favor, complete todos los campos.');
       setSnackbarSeverity('warning');
       setSnackbarOpen(true);
@@ -60,10 +62,38 @@ export default function Sign() {
       return;
     }
 
-    setSnackbarMessage('Registro exitoso.');
-    setSnackbarSeverity('success');
-    setSnackbarOpen(true);
-    // Aquí iría la lógica para manejar el registro del usuario
+    try {
+      const response = await axios.post('/api/signup', { name, lastname, email, password });
+
+      if (response.status !== 201) {
+        setSnackbarMessage('Error al registrarse.');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+        return;
+      }
+
+      setSnackbarMessage('Registro exitoso.');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+
+      // Esperar 2 segundos antes de redirigir
+      setTimeout(() => {
+        Router.push('/');
+      }, 2000);
+    } catch (error) {
+      if (error.response.status === 400) {
+        setSnackbarMessage('El correo electrónico ya está en uso.');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+        return;
+      } else {
+        setSnackbarMessage('Error al registrarse.');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+        return;
+      }
+    }
+
   };
 
   return (
@@ -120,12 +150,12 @@ export default function Sign() {
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <TextField
-                    id="surname-basic"
+                    id="lastname-basic"
                     label="Apellidos"
                     variant="outlined"
                     fullWidth
-                    value={surname}
-                    onChange={(e) => setSurname(e.target.value)}
+                    value={lastname}
+                    onChange={(e) => setLastname(e.target.value)}
                   />
                 </Grid>
               </Grid>

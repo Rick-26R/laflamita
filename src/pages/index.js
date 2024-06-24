@@ -50,11 +50,14 @@ export default function Index() {
       return;
     }
 
-    Cookies.set('token', {
+    const cookieData = {
       token: response.data.data.token,
       role: response.data.data.role,
       path: response.data.data.path,
-    }, { expires: 1 });
+    };
+
+    Cookies.set('token', JSON.stringify(cookieData), { expires: 1 });
+    
     
     setSnackbarMessage('Inicio de sesión exitoso.');
     setSnackbarSeverity('success');
