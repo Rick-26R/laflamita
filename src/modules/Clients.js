@@ -14,69 +14,16 @@ import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
 import { Blocked, NotBlocked } from '../components/buttons/ButtonsClient';
-import { Button } from '@mui/material';
+import axios from 'axios';
+import { getToken } from '../../utils/CookiesUtils';
 
-function createData(id, name, mail, isBlocked) {
-    return { id, name, mail, isBlocked };
-}
-
-
-const rows = [
-    createData(0, 'Elvis Presley', 'example@mail.com', true),
-    createData(1, 'Paul McCartney', 'example@mail.com', true),
-    createData(2, 'Tom Scholz', 'example@mail.com', true),
-    createData(3, 'Michael Jackson', 'example@mail.com', true),
-    createData(4, 'Bruce Springsteen', 'example@mail.com', true),
-    createData(5, 'Whitney Houston', 'example@mail.com', true),
-    createData(6, 'Janis Joplin', 'example@mail.com', true),
-    createData(7, 'Jimi Hendrix', 'example@mail.com', true),
-    createData(8, 'Kurt Cobain', 'example@mail.com', false),
-    createData(9, 'Jim Morrison', 'example@mail.com', false),
-    createData(10, 'John Lennon', 'example@mail.com', false),
-    createData(11, 'Freddie Mercury', 'example@mail.com', false),
-    createData(12, 'David Bowie', 'example@mail.com', false),
-    createData(13, 'Prince', 'example@mail.com', false),
-    createData(14, 'Tina Turner', 'example@mail.com', false),
-];
-
-const rowsPerPageOptions = rows.map((row, index) => {
-    if (index % 5 === 0 && index !== 0 && index <= 25) {
-        return index;
-    }
-}).filter((row) => row !== undefined);
-
-function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-function getComparator(order, orderBy) {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) {
-            return order;
-        }
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
+function createData(id, name, mail, status) {
+    return { id, name, mail, status };
 }
 
 const headCells = [
     { id: 'name', numeric: false, disablePadding: false, label: 'Nombre' },
     { id: 'mail', numeric: false, disablePadding: false, label: 'Correo' },
-
 ];
 
 function EnhancedTableHead(props) {
@@ -120,14 +67,34 @@ function EnhancedTableHead(props) {
     );
 }
 
-
-export default function Users(props) {
+export default function Clients(props) {
+    const [rows, setRows] = React.useState([]);
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('amount');
+    const [orderBy, setOrderBy] = React.useState('name');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchText, setSearchText] = React.useState('');
-    const [filteredRows, setFilteredRows] = React.useState(rows);
+    const [filteredRows, setFilteredRows] = React.useState([]);
+
+    React.useEffect(() => {
+        const fetchClients = async () => {
+            try {
+                const res = await axios.get('/api/clients', {
+                    headers: {
+                        Authorization: `Bearer ${getToken()}`
+                    }
+                });
+                const clients = res.data.data;
+                const formattedRows = clients.map(client => createData(client._id, `${client.name} ${client.lastname}`, client.email, client.status));
+                setRows(formattedRows);
+                setFilteredRows(formattedRows);
+            } catch (error) {
+                console.error('Error fetching clients:', error);
+            }
+        };
+
+        fetchClients();
+    }, []);
 
     React.useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -140,7 +107,7 @@ export default function Users(props) {
         }, 300);
 
         return () => clearTimeout(delayDebounceFn);
-    }, [searchText]);
+    }, [searchText, rows]);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -214,7 +181,7 @@ export default function Users(props) {
                                         align='center'
                                         padding='normal'
                                     >
-                                        {row.isBlocked ? (<Blocked id={row.id} />) : (<NotBlocked id={row.id} />)}
+                                        {row.status === 'active' ? (<Blocked id={row.id} />) : (<NotBlocked id={row.id} />)}
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -222,7 +189,7 @@ export default function Users(props) {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={props.rows || rowsPerPageOptions}
+                    rowsPerPageOptions={[5, 10, 25]}
                     component="div"
                     count={filteredRows.length}
                     rowsPerPage={rowsPerPage}
@@ -233,4 +200,32 @@ export default function Users(props) {
             </Paper>
         </React.Fragment >
     );
+}
+
+function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+        return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+        return 1;
+    }
+    return 0;
+}
+
+function getComparator(order, orderBy) {
+    return order === 'desc'
+        ? (a, b) => descendingComparator(a, b, orderBy)
+        : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) {
+            return order;
+        }
+        return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
 }

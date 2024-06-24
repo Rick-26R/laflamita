@@ -26,3 +26,18 @@ export const decodeToken = (token) => {
     const decoded = Jwt.decode(token);
     return decoded;
 }
+
+export const isExpired = (token) => {
+    const decoded = Jwt.decode(token);
+    const now = Date.now() / 1000;
+    return now > decoded.exp;
+}
+
+export const isValidToken = (token) => {
+    try {
+        Jwt.verify(token, process.env.JWT_SECRET);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
