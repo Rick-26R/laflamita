@@ -33,7 +33,7 @@ export default async function signup(req, res) {
 
         const newUser = {
             _id: generateUUID(),
-            email,
+            email: email.toLowerCase(),
             password: hashedPassword,
             name,
             lastname,

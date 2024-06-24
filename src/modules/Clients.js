@@ -181,7 +181,7 @@ export default function Clients(props) {
                                         align='center'
                                         padding='normal'
                                     >
-                                        {row.status === 'active' ? (<Blocked id={row.id} />) : (<NotBlocked id={row.id} />)}
+                                        {row.status === 'active' ? (<NotBlocked id={row.id} />) : (<Blocked id={row.id} />)}
                                     </TableCell>
                                 </TableRow>
                             ))}

@@ -1,6 +1,6 @@
 import { findDocuments } from "../../../../utils/dbConnection";
 import CustomResponse from "../../../../utils/CustomeResponse";
-import { decodeToken, verifyToken, isExpired, isValidToken } from "../../../../utils/TokenUtils";
+import { decodeToken, isExpired, isValidToken } from "../../../../utils/TokenUtils";
 
 export default async function clients(req, res) {
     const method = req.method;
