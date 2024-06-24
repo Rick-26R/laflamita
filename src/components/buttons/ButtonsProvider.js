@@ -6,6 +6,9 @@ import { Delete, Close, Edit } from '@mui/icons-material';
 import { ProvidersFormPut } from '../forms/ProvidersForm';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import axios from 'axios';
+import { getToken } from '../../../utils/CookiesUtils';
+import Router from 'next/router';
 
 const style = {
     position: 'absolute',
@@ -65,8 +68,21 @@ export function Actions(props) {
 
             <IconButton
                 aria-label="delete"
-                onClick={() => {
-                    console.log('Eliminar');
+                onClick={async () => {
+                    try {
+                        const response = await axios.delete(`/api/providers/${props.data.id}`, {
+                            headers: {
+                                Authorization: `Bearer ${getToken()}`
+                            }
+                        });
+
+                        if (response.status === 200) {
+                            Router.reload();
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
+                    
                 }}
             >
                 <Tooltip title="Eliminar proveedor">

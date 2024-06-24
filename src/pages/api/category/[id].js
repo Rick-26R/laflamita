@@ -39,6 +39,12 @@ export default async function clients(req, res) {
             case 'PUT':
                 const { name } = req.body;
 
+                const categoryExists = await findDocument('categories', { name: name });
+
+                if (categoryExists) {
+                    return res.status(400).json(new CustomResponse(400, 'La categoría ya existe', null, null));
+                }
+
                 const db = await connectToDatabase();
                 const result = await db.collection('categories').updateOne({ _id: id }, { $set: { name: name, updatedAt: new Date() } });
 

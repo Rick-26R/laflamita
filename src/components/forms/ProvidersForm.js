@@ -2,7 +2,9 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Button, TextField, Grid, Box, Container, Snackbar, Alert } from '@mui/material';
 import Title from '../Title';
-
+import axios from 'axios';
+import { getToken } from '../../../utils/CookiesUtils';
+import Router from 'next/router';
 export default function ProvidersForm() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -12,15 +14,15 @@ export default function ProvidersForm() {
         setSnackbarOpen(false);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
         const name = data.get('name');
-        const surname = data.get('surname');
+        const lastname = data.get('lastname');
         const email = data.get('email');
 
-        if (!name || !surname || !email) {
+        if (!name || !lastname || !email) {
             setSnackbarMessage('Por favor, complete todos los campos.');
             setSnackbarSeverity('warning');
             setSnackbarOpen(true);
@@ -35,9 +37,29 @@ export default function ProvidersForm() {
             return;
         }
 
-        setSnackbarMessage('Formulario enviado exitosamente.');
+        try {
+            const response = await axios.post('/api/providers', {
+                name,
+                lastname,
+                email
+            }, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+        } catch (error) {
+            setSnackbarMessage('Error al guardar el proveedor.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+            return;
+        }
+
+        setSnackbarMessage('Proveedor guardado exitosamente.');
         setSnackbarSeverity('success');
         setSnackbarOpen(true);
+        setTimeout(() => {
+            Router.reload();
+        }, 2000);
 
     };
 
@@ -64,14 +86,14 @@ export default function ProvidersForm() {
                         </Grid>
                         <Grid item xs={12} sm={6}>
                             <TextField
-                                name="surname"
+                                name="lastname"
                                 required
                                 fullWidth
-                                id="surname"
+                                id="lastname"
                                 label="Apellido(s)"
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
                             <TextField
                                 name="email"
                                 required
@@ -107,6 +129,7 @@ export default function ProvidersForm() {
     );
 }
 export function ProvidersFormPut(props) {
+    console.log(props);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('info');
@@ -115,7 +138,7 @@ export function ProvidersFormPut(props) {
         setSnackbarOpen(false);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
@@ -138,9 +161,29 @@ export function ProvidersFormPut(props) {
             return;
         }
 
-        setSnackbarMessage('Formulario enviado exitosamente.');
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
+        try {
+            const res = await axios.put(`/api/providers/${props.data.id}`, {
+                name,
+                lastname,
+                email
+            }, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            console.log(res.data);
+            setSnackbarMessage('Proveedor actualizado exitosamente.');
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
+            setTimeout(() => {
+                Router.reload();
+            });
+        } catch (error) {
+            console.error(error);
+            setSnackbarMessage('Error al actualizar el proveedor.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+        }
 
     };
 
@@ -176,7 +219,7 @@ export function ProvidersFormPut(props) {
                                 defaultValue={props.data.lastname}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
                             <TextField
                                 name="email"
                                 required

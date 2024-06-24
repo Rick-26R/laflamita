@@ -19,9 +19,11 @@ import ProvidersForm from '@/components/forms/ProvidersForm';
 import Modal from '@mui/material/Modal';
 import IconButton from '@mui/material/IconButton';
 import { Close } from '@mui/icons-material';
+import axios from 'axios';
+import { getToken } from '../../utils/CookiesUtils';
 
-function createData(id, name, amount, mail) {
-    return { id, name, amount, mail };
+function createData(id, name, amount, email) {
+    return { id, name, amount, email };
 }
 
 const style = {
@@ -36,29 +38,11 @@ const style = {
     p: 5,
 };
 
-
-const rows = [
-    createData(0, 'Elvis Presley', -312.44, 'example@mail.com'),
-    createData(1, 'Paul McCartney', -866.99, 'example@mail.com'),
-    createData(2, 'Tom Scholz', -100.81, 'example@mail.com'),
-    createData(3, 'Michael Jackson', -654.39, 'example@mail.com'),
-    createData(4, 'Bruce Springsteen', -212.79, 'example@mail.com'),
-    createData(5, 'Whitney Houston', -150.00, 'example@mail.com'),
-    createData(7, 'Jimi Hendrix', -820.42, 'example@mail.com'),
-    createData(8, 'Kurt Cobain', -732.18, 'example@mail.com'),
-    createData(9, 'Jim Morrison', -319.29, 'example@mail.com'),
-    createData(10, 'John Lennon', -912.34, 'example@mail.com'),
-    createData(11, 'Freddie Mercury', -615.67, 'example@mail.com'),
-    createData(12, 'David Bowie', -732.81, 'example@mail.com'),
-    createData(13, 'Prince', -501.45, 'example@mail.com'),
-    createData(14, 'Tina Turner', -673.12, 'example@mail.com'),
+const headCells = [
+    { id: 'name', numeric: false, disablePadding: false, label: 'Nombre' },
+    { id: 'amount', numeric: true, disablePadding: false, label: 'Total adeudado' },
+    { id: 'email', numeric: false, disablePadding: false, label: 'Correo' },
 ];
-
-const rowsPerPageOptions = rows.map((row, index) => {
-    if (index % 5 === 0 && index !== 0 && index <= 25) {
-        return index;
-    }
-}).filter((row) => row !== undefined);
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -87,12 +71,6 @@ function stableSort(array, comparator) {
     });
     return stabilizedThis.map((el) => el[0]);
 }
-
-const headCells = [
-    { id: 'name', numeric: false, disablePadding: false, label: 'Nombre' },
-    { id: 'amount', numeric: true, disablePadding: false, label: 'Total adeudado' },
-    { id: 'mail', numeric: false, disablePadding: false, label: 'Correo' },
-];
 
 function EnhancedTableHead(props) {
     const { order, orderBy, onRequestSort } = props;
@@ -135,19 +113,36 @@ function EnhancedTableHead(props) {
     );
 }
 
-
 export default function Providers(props) {
     const [order, setOrder] = React.useState('asc');
     const [orderBy, setOrderBy] = React.useState('amount');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchText, setSearchText] = React.useState('');
-    const [filteredRows, setFilteredRows] = React.useState(rows);
+    const [rows, setRows] = React.useState([]);
+    const [filteredRows, setFilteredRows] = React.useState([]);
 
+    const fetchProviders = async () => {
+        try {
+            const res = await axios.get('/api/providers', {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            const providers = res.data.data;
+            const formattedData = providers.map(provider =>
+                createData(provider._id, `${provider.name} ${provider.lastname}`, provider.debt, provider.email)
+            );
+            setRows(formattedData);
+            setFilteredRows(formattedData);
+        } catch (error) {
+            console.error("Error fetching providers", error);
+        }
+    };
 
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    React.useEffect(() => {
+        fetchProviders();
+    }, []);
 
     React.useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -155,13 +150,13 @@ export default function Providers(props) {
                 rows.filter((row) =>
                     row.name.toLowerCase().includes(searchText.toLowerCase()) ||
                     row.amount.toString().toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.mail.toLowerCase().includes(searchText.toLowerCase())
+                    row.email.toLowerCase().includes(searchText.toLowerCase())
                 )
             );
         }, 300);
 
         return () => clearTimeout(delayDebounceFn);
-    }, [searchText]);
+    }, [searchText, rows]);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -191,6 +186,10 @@ export default function Providers(props) {
         [filteredRows, order, orderBy, page, rowsPerPage],
     );
 
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     return (
         <React.Fragment>
             <Title>Proveedores</Title>
@@ -209,12 +208,11 @@ export default function Providers(props) {
                     }}
                     value={searchText}
                     onChange={handleSearchTextChange}
-                    InputProps={
-                        {
-                            endAdornment: (
-                                <Search color="disabled" />
-                            )
-                        }}
+                    InputProps={{
+                        endAdornment: (
+                            <Search color="disabled" />
+                        )
+                    }}
                 />
                 <Button
                     variant="contained"
@@ -242,7 +240,7 @@ export default function Providers(props) {
                     >
                         <Close />
                     </IconButton>
-                    <ProvidersForm/>
+                    <ProvidersForm />
                 </Box>
             </Modal>
             <Paper sx={{ width: '100%', mb: 2 }}>
@@ -259,7 +257,7 @@ export default function Providers(props) {
                                 <TableRow key={row.id}>
                                     <TableCell>{row.name}</TableCell>
                                     <TableCell align="right">{`$${row.amount}`}</TableCell>
-                                    <TableCell>{row.mail}</TableCell>
+                                    <TableCell>{row.email}</TableCell>
                                     <TableCell
                                         align='center'
                                         padding='normal'
@@ -268,7 +266,7 @@ export default function Providers(props) {
                                             id: row.id,
                                             name: row.name.split(' ')[0],
                                             lastname: row.name.split(' ')[1],
-                                            email: row.mail
+                                            email: row.email
                                         }} />
                                     </TableCell>
                                 </TableRow>
@@ -277,7 +275,7 @@ export default function Providers(props) {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={props.rows || rowsPerPageOptions}
+                    rowsPerPageOptions={[5, 10, 25]}
                     component="div"
                     count={filteredRows.length}
                     rowsPerPage={rowsPerPage}
