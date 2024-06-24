@@ -8,21 +8,6 @@ export function Actions(props) {
     return (
         <>
             <IconButton
-                aria-label="view"
-                onClick={() => {
-                    console.log('Ver');
-                }}
-            >
-                <Tooltip title="Ver proveedor">
-                    <Visibility
-                        sx={{
-                            color: blue[900]
-                        }}
-                    />
-                </Tooltip>
-            </IconButton>
-
-            <IconButton
                 aria-label="print"
                 onClick={() => {
                     console.log('Imprimir');
