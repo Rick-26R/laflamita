@@ -221,7 +221,12 @@ export default function Providers(props) {
                                         align='center'
                                         padding='normal'
                                     >
-                                        <Actions id={row.id} />
+                                        <Actions data={{
+                                            id: row.id,
+                                            name: row.name.split(' ')[0],
+                                            lastname: row.name.split(' ')[1],
+                                            mail: row.email
+                                        }} />
                                     </TableCell>
                                 </TableRow>
                             ))}
