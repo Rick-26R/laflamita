@@ -52,7 +52,7 @@ export default async function clients(req, res) {
                     const statusValue = client.status === 'active' ? 'blocked' : 'active';
                     const db = await connectToDatabase();
 
-                    const result = await db.collection('users').updateOne({ _id: id }, { $set: { status: statusValue } });
+                    const result = await db.collection('users').updateOne({ _id: id }, { $set: { status: statusValue, updatedAt: new Date() } });
 
                     if (result.modifiedCount === 0) {
                         return res.status(404).json(new CustomResponse(404, 'Cliente no actualizado', null, null));

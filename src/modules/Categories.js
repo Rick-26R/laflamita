@@ -17,23 +17,29 @@ import { Actions } from '@/components/buttons/ButtonsCategories';
 import { Chip, Button, Stack, Modal, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import CategoryForm from '@/components/forms/CategoryForm';
+import axios from 'axios';
+import { getToken } from '../../utils/CookiesUtils';
 
 function createData(id, date, category) {
     return { id, date, category };
 }
 
-
-const rows = [
-    createData(0, '2021-10-01', 'Alimentos'),
-    createData(1, '2021-10-01', 'Lacteos'),
-    createData(2, '2021-10-01', 'Bebidas'),
+const headCells = [
+    { id: 'date', numeric: false, disablePadding: false, label: 'Ultima actualización' },
+    { id: 'category', numeric: false, disablePadding: false, label: 'Categoria' },
 ];
 
-const rowsPerPageOptions = rows.map((row, index) => {
-    if (index % 5 === 0 && index !== 0 && index <= 25) {
-        return index;
-    }
-}).filter((row) => row !== undefined);
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 550,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 5,
+};
 
 function descendingComparator(a, b, orderBy) {
     if (b[orderBy] < a[orderBy]) {
@@ -62,23 +68,6 @@ function stableSort(array, comparator) {
     });
     return stabilizedThis.map((el) => el[0]);
 }
-
-const headCells = [
-    { id: 'date', numeric: false, disablePadding: false, label: 'Ultima actualización' },
-    { id: 'category', numeric: false, disablePadding: false, label: 'Categoria' },
-];
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 550,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 5,
-};
 
 function EnhancedTableHead(props) {
     const { order, orderBy, onRequestSort } = props;
@@ -121,19 +110,37 @@ function EnhancedTableHead(props) {
     );
 }
 
-
 export default function Categories(props) {
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('amount');
+    const [orderBy, setOrderBy] = React.useState('date');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchText, setSearchText] = React.useState('');
-    const [filteredRows, setFilteredRows] = React.useState(rows);
+    const [rows, setRows] = React.useState([]);
+    const [filteredRows, setFilteredRows] = React.useState([]);
 
+    const fetchCategories = async () => {
+        try {
+            const res = await axios.get('/api/category', {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+            const categories = res.data.data;
+            console.log(categories);
+            const formattedData = categories.map(category =>
+                createData(category._id, category.updatedAt, category.name)
+            );
+            setRows(formattedData);
+            setFilteredRows(formattedData);
+        } catch (error) {
+            console.error("Error fetching categories", error);
+        }
+    };
 
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    React.useEffect(() => {
+        fetchCategories();
+    }, []);
 
     React.useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
@@ -146,7 +153,7 @@ export default function Categories(props) {
         }, 300);
 
         return () => clearTimeout(delayDebounceFn);
-    }, [searchText]);
+    }, [searchText, rows]);
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
@@ -176,6 +183,10 @@ export default function Categories(props) {
         [filteredRows, order, orderBy, page, rowsPerPage],
     );
 
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     return (
         <React.Fragment>
             <Title>Categorias</Title>
@@ -194,15 +205,13 @@ export default function Categories(props) {
                     }}
                     value={searchText}
                     onChange={handleSearchTextChange}
-                    InputProps={
-                        {
-                            endAdornment: (
-                                <Search color="disabled" />
-                            )
-                        }}
+                    InputProps={{
+                        endAdornment: (
+                            <Search color="disabled" />
+                        )
+                    }}
                 />
                 <Stack direction='row' spacing={2}>
-
                     <Modal
                         open={open}
                         onClose={handleClose}
@@ -224,7 +233,6 @@ export default function Categories(props) {
                             <CategoryForm />
                         </Box>
                     </Modal>
-
                     <Button
                         variant="contained"
                         color="primary"
@@ -246,7 +254,7 @@ export default function Categories(props) {
                         <TableBody>
                             {visibleRows.map((row) => (
                                 <TableRow key={row.id}>
-                                    <TableCell>{row.date}</TableCell>
+                                    <TableCell>{row.date.split('T')[0]}</TableCell>
                                     <TableCell>
                                         <Chip
                                             label={row.category}
@@ -255,12 +263,8 @@ export default function Categories(props) {
                                             size='small'
                                         />
                                     </TableCell>
-                                    <TableCell
-                                        align='center'
-                                        padding='normal'
-                                    >
-
-                                        <Actions id={row.id} />
+                                    <TableCell align='center' padding='normal'>
+                                        <Actions data={{ id: row.id, category: row.category }} />
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -268,7 +272,7 @@ export default function Categories(props) {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={props.rows || rowsPerPageOptions}
+                    rowsPerPageOptions={[5, 10, 25]}
                     component="div"
                     count={filteredRows.length}
                     rowsPerPage={rowsPerPage}
@@ -277,8 +281,6 @@ export default function Categories(props) {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-        </React.Fragment >
+        </React.Fragment>
     );
-
 }
-

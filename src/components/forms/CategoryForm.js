@@ -1,15 +1,29 @@
 import React from 'react'
 import { Button, Container, Grid, InputLabel, TextField, Box } from '@mui/material'
 import Title from '../Title';
+import axios from 'axios';
+import Router from 'next/router';
+import { getToken } from '../../../utils/CookiesUtils';
 
 export default function CategoryForm() {
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
             name: data.get('name'),
         });
+
+        try {
+            const response = await axios.post('/api/category', { name: data.get('name') }, { headers: { 'Authorization': `Bearer ${getToken()}` } });
+            console.log(response);
+            if (response.data.status === 201) {
+                Router.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
     };
     return (
         <>
@@ -49,14 +63,22 @@ export default function CategoryForm() {
         </>
     )
 }
-export function CategoryFormPut() {
-
-    const handleSubmit = (event) => {
+export function CategoryFormPut(props) {
+    console.log(props.data);
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            name: data.get('name'),
-        });
+
+        try {
+            const response = await axios.put(`/api/category/${props.data.id}`, { name: data.get('name') }, { headers: { 'Authorization': `Bearer ${getToken()}` } });
+            console.log(response);
+            if (response.data.status === 200) {
+                Router.reload();
+            }
+        } catch (error) {
+            console.log(error);
+        }
+
     };
     return (
         <>
@@ -79,6 +101,7 @@ export function CategoryFormPut() {
                                     required
                                     fullWidth
                                     id="name"
+                                    defaultValue={props.data.category}
                                 />
                             </Grid>
                         </Grid>

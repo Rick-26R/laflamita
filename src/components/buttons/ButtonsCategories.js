@@ -48,7 +48,7 @@ export function Actions(props) {
                     >
                         <Close />
                     </IconButton>
-                    <CategoryFormPut id={props.id} />
+                    <CategoryFormPut data={props.data} />
                 </Box>
             </Modal>
 
