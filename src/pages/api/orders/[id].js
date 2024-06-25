@@ -28,6 +28,8 @@ export default async function handler(req, res) {
             case 'DELETE':
                 const order = await findDocument('orders', { _id: id });
 
+                console.log(order);
+
                 if (!order) {
                     return res.status(404).json(new CustomResponse(404, 'Orden no encontrada', null, null));
                 }
@@ -37,6 +39,25 @@ export default async function handler(req, res) {
                 if (!rs) {
                     return res.status(500).json(new CustomResponse(500, 'Error al eliminar la orden', null, null));
                 }
+
+                //restaurar stock de los productos comprados
+                order.items.forEach(async item => {
+                    console.log(item);
+                    const product = await findDocument('products', { _id: item.id });
+                    console.log(product);
+                    if (!product) {
+                        return res.status(404).json(new CustomResponse(404, 'Producto no encontrado', null, null));
+                    }
+
+                    const db = await connectToDatabase();
+
+                    const result = await db.collection('products').updateOne({ _id: item.id }, { $set: { quantity: product.quantity + item.quantity } });
+                    console.log(result);
+                    if (!result) {
+                        return res.status(500).json(new CustomResponse(500, 'Error al restaurar el stock del producto', null, null));
+                    }
+                });
+
 
                 return res.status(200).json(new CustomResponse(200, 'Orden eliminada', null, null));
 
