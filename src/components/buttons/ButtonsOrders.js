@@ -170,7 +170,7 @@ export function ButtonsPaid(props) {
                     >
                         <Close />
                     </IconButton>
-                    <ProductOrderModal />
+                    <ProductOrderModal data={props.data} />
                 </Box>
             </Modal>
         </>
