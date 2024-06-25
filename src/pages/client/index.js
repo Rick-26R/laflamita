@@ -6,15 +6,10 @@ import Products from '@/components/Products';
 import { useEffect, useState } from 'react';
 
 export default function ProductsPage() {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   return (
     <>
-        <title>Productos</title>
+      <title>Productos</title>
       <Box sx={{ display: 'flex' }}>
         <MenuDash title="Productos" />
         <Box
@@ -30,7 +25,7 @@ export default function ProductsPage() {
           }}
         >
           <Toolbar />
-          {isMounted && <Products />}
+          <Products />
         </Box>
       </Box>
     </>

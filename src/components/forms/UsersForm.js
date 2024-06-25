@@ -2,6 +2,8 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Button, TextField, Grid, Box, Container, Snackbar, Alert } from '@mui/material';
 import Title from '../Title';
+import axios from 'axios';
+import { getToken } from '../../../utils/CookiesUtils';
 
 export default function UsersForm() {
     const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -12,7 +14,7 @@ export default function UsersForm() {
         setSnackbarOpen(false);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
@@ -36,16 +38,32 @@ export default function UsersForm() {
             return;
         }
 
-        setSnackbarMessage('Formulario enviado exitosamente.');
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
+        try {
+            const response = await axios.post('/api/users', {
+                name: name,
+                lastname: surname,
+                email: email,
+                password: password,
+            },
+                {
+                    headers: {
+                        Authorization: `Bearer ${getToken()}`
+                    }
+                });
 
-        console.log({
-            name,
-            surname,
-            email,
-            password,
-        });
+            if (response.status === 201) {
+                setSnackbarMessage('Usuario creado con éxito.');
+                setSnackbarSeverity('success');
+                setSnackbarOpen(true);
+            }
+
+        } catch (error) {
+            console.error('Error al crear el usuario:', error);
+            setSnackbarMessage('Error al crear el usuario.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+        }
+
     };
 
     return (

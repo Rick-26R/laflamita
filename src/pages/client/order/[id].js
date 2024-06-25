@@ -29,8 +29,8 @@ export default function success() {
           }}
         >
           <Toolbar />
-          <ProductOrder />
-        </Box>
+{/*           <ProductOrder />
+ */}        </Box>
       </Box>
     </>
   );

@@ -2,8 +2,12 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Button, TextField, Grid, Box, Container, Snackbar, Alert } from '@mui/material';
 import Title from '../Title';
+import axios from 'axios';
+import { getToken } from '../../../utils/CookiesUtils';
+import Router from 'next/router';
 
 export default function UsersFormUpdate(props) {
+    console.log(props);
     const [snackbarOpen, setSnackbarOpen] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
     const [snackbarSeverity, setSnackbarSeverity] = useState('info');
@@ -12,7 +16,7 @@ export default function UsersFormUpdate(props) {
         setSnackbarOpen(false);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
@@ -36,16 +40,33 @@ export default function UsersFormUpdate(props) {
             return;
         }
 
-        setSnackbarMessage('Formulario enviado exitosamente.');
-        setSnackbarSeverity('success');
-        setSnackbarOpen(true);
+        try {
+            const response = await axios.put('/api/users/update/' + props.data.id, {
+                name: name,
+                lastname: surname,
+                email: email,
+                password: password,
+            }, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
 
-        console.log({
-            name,
-            surname,
-            email,
-            password,
-        });
+
+            if (response.status === 200) {
+                setSnackbarMessage('Usuario actualizado con éxito.');
+                setSnackbarSeverity('success');
+                setSnackbarOpen(true);
+
+                Router.reload();
+            }
+
+        } catch (error) {
+            console.error(error);
+            setSnackbarMessage('Error al actualizar el usuario.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+        }
     };
 
     return (
@@ -67,6 +88,7 @@ export default function UsersFormUpdate(props) {
                                 fullWidth
                                 id="name"
                                 label="Nombre"
+                                defaultValue={props.data.name.split(' ')[0]}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -76,6 +98,7 @@ export default function UsersFormUpdate(props) {
                                 fullWidth
                                 id="surname"
                                 label="Apellido(s)"
+                                defaultValue={props.data.name.split(' ')[1]}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -86,6 +109,7 @@ export default function UsersFormUpdate(props) {
                                 id="email"
                                 label="Correo"
                                 type="email"
+                                defaultValue={props.data.mail}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>

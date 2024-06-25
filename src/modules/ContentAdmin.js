@@ -8,9 +8,34 @@ import Chart from '@/components/Chart';
 import Title from '@/components/Title';
 import { Box } from '@mui/material';
 import Copyright from '@/components/Copyright';
+import axios from 'axios';
+import { getToken } from '../../utils/CookiesUtils';
 
 
 export default function ContentAdmin() {
+    const [dataFetch, setDataFetch] = React.useState([]);
+
+    React.useEffect(() => {
+        const fetchLabels = async () => {
+            try {
+                const response = await axios.get('/api/dashboard/chart', {
+                    headers: {
+                        Authorization: `Bearer ${getToken()}`
+                    }
+                });
+                setDataFetch(response.data.data);
+                console.log(response.data.data);
+                
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        
+
+        fetchLabels();
+    }, []);
+
 
     const options = {
         responsive: true,
@@ -34,21 +59,15 @@ export default function ContentAdmin() {
         maintainAspectRatio: false,
     };
 
-    const labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-    const data = {
-        labels,
+    const data = { 
+        labels: dataFetch.labels,
         datasets: [
             {
-                data: [600, 690, 700, 1500, 1200, 800, 1000, 900, 1100, 1000, 1200, 1300],
+                data: dataFetch.data,
                 borderColor: 'rgb(217, 58, 38)',
                 backgroundColor: 'rgba(217, 58, 38, 0.5)',
-            },
-            {
-                data: [500, 450, 1000, 1100, 600, 600, 800, 700, 900, 800, 1000, 1100],
-                borderColor: 'rgb(254, 193, 193)',
-                backgroundColor: 'rgba(254, 193, 193, 0.5)',
-            },
+            }
         ],
     };
 

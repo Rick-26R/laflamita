@@ -17,7 +17,7 @@ import Router from 'next/router';
 import { mainListItems as mainListUser } from '../components/ListUser';
 import { mainListItems as mainListClient } from '@/components/ListClients';
 import { getRole, getToken } from '../../utils/CookiesUtils';
-import { isExpired } from '../../utils/TokenUtils';
+import { isAValidRoute, isExpired } from '../../utils/TokenUtils';
 import Cookies from 'js-cookie';
 
 const drawerWidth = 240;
@@ -77,105 +77,108 @@ export default function MenuDash(props) {
     }
 
     React.useEffect(() => {
-        try {
-            if (!getToken()) {
-                Router.push('/');
-            }
-            if (isExpired(getToken())) {
-                Cookies.remove('token');
-                Router.push('/');
-            }
-        } catch (error) {
+        if (!isAValidRoute(Router.pathname, getRole())) {
+            Router.push('/');
+        }
+    try {
+        if (!getToken()) {
+            Router.push('/');
+        }
+        if (isExpired(getToken())) {
             Cookies.remove('token');
             Router.push('/');
         }
+    } catch (error) {
+        Cookies.remove('token');
+        Router.push('/');
+    }
 
-    }, [])
+}, [])
 
-    return (
-        <>
-            <AppBar position="absolute" open={open}>
-                <Toolbar
+return (
+    <>
+        <AppBar position="absolute" open={open}>
+            <Toolbar
+                sx={{
+                    pr: '24px', // keep right padding when drawer closed
+                }}
+            >
+                <IconButton
+                    edge="start"
+                    color="inherit"
+                    aria-label="open drawer"
+                    onClick={toggleDrawer}
                     sx={{
-                        pr: '24px', // keep right padding when drawer closed
+                        marginRight: '36px',
+                        ...(open && { display: 'none' }),
                     }}
                 >
-                    <IconButton
-                        edge="start"
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={toggleDrawer}
-                        sx={{
-                            marginRight: '36px',
-                            ...(open && { display: 'none' }),
-                        }}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography
-                        component="h1"
-                        variant="h6"
-                        color="inherit"
-                        noWrap
-                        sx={{ flexGrow: 1 }}
-                    >
-                        {props.title}
-                    </Typography>
-                    <IconButton onClick={handleMenuOpen}>
-                        <Badge>
-                            <AccountCircleIcon
-                                sx={{
-                                    fontSize: 35,
-                                }}
-                            />
-                        </Badge>
-                    </IconButton>
-                    <Menu
-                        anchorEl={anchorEl}
-                        open={anchorEl}
-                        onClose={handleMenuOpen}
-                        anchorOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        transformOrigin={{
-                            vertical: 'top',
-                            horizontal: 'right',
-                        }}
-                        getContentAnchorEl={null}
-                        sx={{
-                            marginTop: '40px',
-                        }}
-                    >
-                        <MenuItem
-                            onClick={() => {
-                                Cookies.remove('token');
-                                Router.push('/');
+                    <MenuIcon />
+                </IconButton>
+                <Typography
+                    component="h1"
+                    variant="h6"
+                    color="inherit"
+                    noWrap
+                    sx={{ flexGrow: 1 }}
+                >
+                    {props.title}
+                </Typography>
+                <IconButton onClick={handleMenuOpen}>
+                    <Badge>
+                        <AccountCircleIcon
+                            sx={{
+                                fontSize: 35,
                             }}
-                        >
-                            Cerrar sesión
-                        </MenuItem>
-                    </Menu>
-                </Toolbar>
-            </AppBar>
-            <Drawer variant="permanent" open={open}>
-                <Toolbar
+                        />
+                    </Badge>
+                </IconButton>
+                <Menu
+                    anchorEl={anchorEl}
+                    open={anchorEl}
+                    onClose={handleMenuOpen}
+                    anchorOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                    }}
+                    getContentAnchorEl={null}
                     sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'flex-end',
-                        px: [1],
+                        marginTop: '40px',
                     }}
                 >
-                    <IconButton onClick={toggleDrawer}>
-                        <ChevronLeftIcon />
-                    </IconButton>
-                </Toolbar>
-                <Divider />
-                <List component="nav">
-                    {getRole() === 'admin' || getRole() === 'superadmin' ? mainListUser : mainListClient}
-                </List>
-            </Drawer>
-        </>
-    )
+                    <MenuItem
+                        onClick={() => {
+                            Cookies.remove('token');
+                            Router.push('/');
+                        }}
+                    >
+                        Cerrar sesión
+                    </MenuItem>
+                </Menu>
+            </Toolbar>
+        </AppBar>
+        <Drawer variant="permanent" open={open}>
+            <Toolbar
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-end',
+                    px: [1],
+                }}
+            >
+                <IconButton onClick={toggleDrawer}>
+                    <ChevronLeftIcon />
+                </IconButton>
+            </Toolbar>
+            <Divider />
+            <List component="nav">
+                {getRole() === 'admin' || getRole() === 'superadmin' ? mainListUser : mainListClient}
+            </List>
+        </Drawer>
+    </>
+)
 }
