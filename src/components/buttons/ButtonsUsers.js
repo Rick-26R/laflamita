@@ -6,6 +6,9 @@ import { Visibility, Block, Edit, Delete, Check, Close } from '@mui/icons-materi
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import UsersFormUpdate from '../forms/UsersFormUpdate';
+import Router from 'next/router';
+import axios from 'axios';
+import { getToken } from '../../../utils/CookiesUtils';
 
 const style = {
     position: 'absolute',
@@ -21,6 +24,7 @@ const style = {
 
 
 export function NotBlocked(props) {
+    console.log(props);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -61,15 +65,29 @@ export function NotBlocked(props) {
                     >
                         <Close />
                     </IconButton>
-                        <UsersFormUpdate id={props.id}/>
+                    <UsersFormUpdate data={props.data} />
                 </Box>
             </Modal>
 
 
             <IconButton
                 aria-label="block"
-                onClick={() => {
-                    console.log('Bloquear');
+                onClick={async () => {
+                    try {
+                        const response = await axios.put(`/api/users/${props.data.id}`, {}, {
+                            headers: {
+                                Authorization: `Bearer ${getToken()}`
+                            }
+                        });
+                        console.log(response);
+
+                        if (response.status === 200) {
+                            console.log('Usuario bloqueado');
+                            Router.reload();
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }}
             >
                 <Tooltip title="Bloquear Usuario">
@@ -83,9 +101,24 @@ export function NotBlocked(props) {
 
             <IconButton
                 aria-label="delete"
-                onClick={() => {
-                    console.log('Eliminar');
-                }}
+                onClick={async () => {
+                    try {
+                        const response = await axios.delete(`/api/users/${props.data.id}`, {
+                            headers: {
+                                Authorization: `Bearer ${getToken()}`
+                            }
+                        });
+                        console.log(response);
+
+                        if (response.status === 200) {
+                            console.log('Usuario eliminado');
+                            Router.reload();
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
+                }
             >
                 <Tooltip title="Eliminar Usuario">
                     <Delete
@@ -102,6 +135,7 @@ export function NotBlocked(props) {
 }
 
 export function Blocked(props) {
+    console.log(props);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -142,14 +176,28 @@ export function Blocked(props) {
                     >
                         <Close />
                     </IconButton>
-                        <UsersFormUpdate id={props.id}/>
+                    <UsersFormUpdate data={props.data} />
                 </Box>
             </Modal>
 
             <IconButton
                 aria-label="block"
-                onClick={() => {
-                    console.log('Desbloquear');
+                onClick={async () => {
+                    try {
+                        const response = await axios.put(`/api/users/${props.data.id}`, {}, {
+                            headers: {
+                                Authorization: `Bearer ${getToken()}`
+                            }
+                        });
+                        console.log(response);
+
+                        if (response.status === 200) {
+                            console.log('Usuario desbloqueado');
+                            Router.reload();
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }}
             >
                 <Tooltip title="Desbloquear Usuario">
@@ -163,8 +211,22 @@ export function Blocked(props) {
 
             <IconButton
                 aria-label="delete"
-                onClick={() => {
-                    console.log('Eliminar');
+                onClick={async () => {
+                    try {
+                        const response = await axios.delete(`/api/users/${props.data.id}`, {
+                            headers: {
+                                Authorization: `Bearer ${getToken()}`
+                            }
+                        });
+                        console.log(response);
+
+                        if (response.status === 200) {
+                            console.log('Usuario eliminado');
+                            Router.reload();
+                        }
+                    } catch (error) {
+                        console.log(error);
+                    }
                 }}
             >
                 <Tooltip title="Eliminar Usuario">

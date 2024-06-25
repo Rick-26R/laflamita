@@ -14,77 +14,24 @@ import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
 import { NotBlocked, Blocked } from '../components/buttons/ButtonsUsers';
-import { Button } from '@mui/material';
-import { Chip, Stack, Modal, IconButton } from '@mui/material';
+import { Button, Modal, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import UsersForm from '@/components/forms/UsersForm';
-
+import axios from 'axios';
+import { getToken } from '../../utils/CookiesUtils';
 
 function createData(id, name, mail, status) {
     return { id, name, mail, status };
 }
 
-
-const rows = [
-    createData(0, 'Elvis Presley', 'example1@mail.com', 'active'),
-    createData(1, 'Paul McCartney', 'example@mail.com', 'active'),
-    createData(2, 'Tom Scholz', 'example@mail.com', 'active'),
-    createData(3, 'Michael Jackson', 'example@mail.com', 'active'),
-    createData(4, 'Bruce Springsteen', 'example@mail.com', 'active'),
-    createData(5, 'Whitney Houston', 'example@mail.com', 'active'),
-    createData(6, 'Janis Joplin', 'example@mail.com', 'active'),
-    createData(7, 'Jimi Hendrix', 'example@mail.com', 'active'),
-    createData(8, 'Kurt Cobain', 'example@mail.com', 'active'),
-    createData(9, 'Jim Morrison', 'example@mail.com', 'blocked'),
-    createData(10, 'John Lennon', 'example@mail.com', 'blocked'),
-    createData(11, 'Freddie Mercury', 'example@mail.com', 'blocked'),
-    createData(12, 'David Bowie', 'example@mail.com', 'blocked'),
-    createData(13, 'Prince', 'example@mail.com', 'blocked'),
-    createData(14, 'Tina Turner', 'example@mail.com', 'blocked'),
-];
-
-const rowsPerPageOptions = rows.map((row, index) => {
-    if (index % 5 === 0 && index !== 0 && index <= 25) {
-        return index;
-    }
-}).filter((row) => row !== undefined);
-
-function descendingComparator(a, b, orderBy) {
-    if (b[orderBy] < a[orderBy]) {
-        return -1;
-    }
-    if (b[orderBy] > a[orderBy]) {
-        return 1;
-    }
-    return 0;
-}
-
-function getComparator(order, orderBy) {
-    return order === 'desc'
-        ? (a, b) => descendingComparator(a, b, orderBy)
-        : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-        const order = comparator(a[0], b[0]);
-        if (order !== 0) {
-            return order;
-        }
-        return a[1] - b[1];
-    });
-    return stabilizedThis.map((el) => el[0]);
-}
-
 const headCells = [
     { id: 'name', numeric: false, disablePadding: false, label: 'Nombre' },
     { id: 'mail', numeric: false, disablePadding: false, label: 'Correo' },
-
 ];
 
 function EnhancedTableHead(props) {
     const { order, orderBy, onRequestSort } = props;
+
     const createSortHandler = (property) => (event) => {
         onRequestSort(event, property);
     };
@@ -113,10 +60,7 @@ function EnhancedTableHead(props) {
                         </TableSortLabel>
                     </TableCell>
                 ))}
-                <TableCell
-                    align='center'
-                    padding='normal'
-                >
+                <TableCell align='center' padding='normal'>
                     Acciones
                 </TableCell>
             </TableRow>
@@ -124,36 +68,44 @@ function EnhancedTableHead(props) {
     );
 }
 
-
 export default function Users(props) {
     const [order, setOrder] = React.useState('asc');
-    const [orderBy, setOrderBy] = React.useState('amount');
+    const [orderBy, setOrderBy] = React.useState('name');
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [searchText, setSearchText] = React.useState('');
-    const [filteredRows, setFilteredRows] = React.useState(rows);
-
+    const [rows, setRows] = React.useState([]);
+    const [filteredRows, setFilteredRows] = React.useState([]);
     const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
 
     React.useEffect(() => {
-        const delayDebounceFn = setTimeout(() => {
-            setFilteredRows(
-                rows.filter((row) =>
-                    row.name.toLowerCase().includes(searchText.toLowerCase()) ||
-                    row.mail.toLowerCase().includes(searchText.toLowerCase())
-                )
-            );
-        }, 300);
+        const fetchUsers = async () => {
+            try {
+                const res = await axios.get('/api/users', {
+                    headers: {
+                        Authorization: `Bearer ${getToken()}` // Utiliza tu función getToken para obtener el token de autorización
+                    }
+                });
+                const users = res.data.data;
+                const formattedRows = users.map(user => createData(user._id, `${user.name} ${user.lastname}`, user.email, user.status));
+                setRows(formattedRows);
+                setFilteredRows(formattedRows);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
 
-        return () => clearTimeout(delayDebounceFn);
-    }, [searchText]);
+        fetchUsers();
+    }, []); // El array vacío [] indica que este efecto se ejecuta solo una vez al montar el componente
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
         setOrder(isAsc ? 'desc' : 'asc');
         setOrderBy(property);
+    };
+
+    const handleSearchTextChange = (event) => {
+        setSearchText(event.target.value);
     };
 
     const handleChangePage = (event, newPage) => {
@@ -165,18 +117,16 @@ export default function Users(props) {
         setPage(0);
     };
 
-    const handleSearchTextChange = (event) => {
-        setSearchText(event.target.value);
-    };
+    const handleOpen = () => setOpen(true);
 
-    const visibleRows = React.useMemo(
-        () =>
-            stableSort(filteredRows, getComparator(order, orderBy)).slice(
-                page * rowsPerPage,
-                page * rowsPerPage + rowsPerPage,
-            ),
-        [filteredRows, order, orderBy, page, rowsPerPage],
-    );
+    const handleClose = () => setOpen(false);
+
+    const visibleRows = React.useMemo(() => {
+        return stableSort(filteredRows, getComparator(order, orderBy)).slice(
+            page * rowsPerPage,
+            page * rowsPerPage + rowsPerPage
+        );
+    }, [filteredRows, order, orderBy, page, rowsPerPage]);
 
     const style = {
         position: 'absolute',
@@ -193,12 +143,14 @@ export default function Users(props) {
     return (
         <React.Fragment>
             <Title>Usuarios</Title>
-            <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                mb: 2,
-            }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    mb: 2,
+                }}
+            >
                 <TextField
                     label="Buscar"
                     variant="filled"
@@ -208,24 +160,13 @@ export default function Users(props) {
                     }}
                     value={searchText}
                     onChange={handleSearchTextChange}
-                    InputProps={
-                        {
-                            endAdornment: (
-                                <Search color="disabled" />
-                            )
-                        }}
+                    InputProps={{
+                        endAdornment: <Search color="disabled" />,
+                    }}
                 />
-
-                
-
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleOpen}
-                >
+                <Button variant="contained" color="primary" onClick={handleOpen}>
                     Agregar
                 </Button>
-                
                 <Modal
                     open={open}
                     onClose={handleClose}
@@ -239,7 +180,7 @@ export default function Users(props) {
                             sx={{
                                 position: 'absolute',
                                 right: 8,
-                                top: 8
+                                top: 8,
                             }}
                         >
                             <Close />
@@ -262,11 +203,12 @@ export default function Users(props) {
                                 <TableRow key={row.id}>
                                     <TableCell>{row.name}</TableCell>
                                     <TableCell>{row.mail}</TableCell>
-                                    <TableCell
-                                        align='center'
-                                        padding='normal'
-                                    >
-                                        {row.status === 'active' ? (<Blocked id={row.id} />) : (<NotBlocked id={row.id} />)}
+                                    <TableCell align="center" padding="normal">
+                                        {row.status === 'active' ? (
+                                            <NotBlocked data={row} />
+                                        ) : (
+                                            <Blocked data={row} />
+                                        )}
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -274,7 +216,7 @@ export default function Users(props) {
                     </Table>
                 </TableContainer>
                 <TablePagination
-                    rowsPerPageOptions={props.rows || rowsPerPageOptions}
+                    rowsPerPageOptions={props.rows || [5, 10, 25]}
                     component="div"
                     count={filteredRows.length}
                     rowsPerPage={rowsPerPage}
@@ -283,6 +225,34 @@ export default function Users(props) {
                     onRowsPerPageChange={handleChangeRowsPerPage}
                 />
             </Paper>
-        </React.Fragment >
+        </React.Fragment>
     );
+}
+
+function descendingComparator(a, b, orderBy) {
+    if (b[orderBy] < a[orderBy]) {
+        return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+        return 1;
+    }
+    return 0;
+}
+
+function getComparator(order, orderBy) {
+    return order === 'desc'
+        ? (a, b) => descendingComparator(a, b, orderBy)
+        : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+function stableSort(array, comparator) {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+        const order = comparator(a[0], b[0]);
+        if (order !== 0) {
+            return order;
+        }
+        return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
 }
