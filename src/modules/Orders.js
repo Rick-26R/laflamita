@@ -26,7 +26,7 @@ const headCells = [
 ];
 
 function createData(id, date, name, amount, isPaid, items) {
-    return { id, date, name, amount, isPaid , items};
+    return { id, date, name, amount, isPaid, items };
 }
 
 function EnhancedTableHead(props) {
@@ -191,11 +191,11 @@ const Orders = () => {
                                         align='center'
                                         padding='normal'
                                     >
-                                        
+
                                         {row.isPaid ? (
-                                            <ButtonsPaid data={row.items} />
+                                            <ButtonsPaid data={row.items} orderId={row.id} />
                                         ) : (
-                                            <ButtonsNotPaid data={row.items} />
+                                            <ButtonsNotPaid data={row.items} orderId={row.id} />
                                         )}
                                     </TableCell>
                                 </TableRow>

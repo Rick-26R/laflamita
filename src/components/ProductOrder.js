@@ -91,11 +91,11 @@ export function ProductOrderModal(props) {
                                 </Box>
                             </Card>
                             <Box>
-                                <Title>Total: ${total}</Title>
                             </Box>
                         </>
 
                     ))}
+                    <Title>Total: ${total}</Title>
                 </CardContent>
             </Card>
         </Container>
