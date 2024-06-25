@@ -22,9 +22,49 @@ const style = {
 
 
 export function ButtonsNotPaid(props) {
+    console.log(props);
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     return (
         <>
+            <IconButton
+                aria-label="view"
+                onClick={() => {
+                    handleOpen();
+                }}
+            >
+                <Tooltip title="Ver orden">
+                    <Visibility
+                        sx={{
+                            color: blue[900]
+                        }}
+                    />
+                </Tooltip>
+            </IconButton>
 
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={style}>
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleClose}
+                        sx={{
+                            position: 'absolute',
+                            right: 8,
+                            top: 8
+                        }}
+                    >
+                        <Close />
+                    </IconButton>
+                    <ProductOrderModal data={props.data}/>
+                </Box>
+            </Modal>
             <IconButton
                 aria-label="pay"
                 onClick={() => {

@@ -38,6 +38,10 @@ export default async function orders(req, res) {
                     return res.status(404).json(new CustomResponse(404, 'Cliente no encontrado', null, null));
                 }
 
+                let date = new Date();
+                date = date.toISOString().split('T')[0];
+                console.log(date);
+
                 const order = {
                     _id: generateUUID(),
                     client_id: client._id,
@@ -45,7 +49,7 @@ export default async function orders(req, res) {
                     total: total,
                     items: items,
                     isPaid: isPaid,
-                    createdAt: new Date()
+                    createdAt: date
                 }
                 console.log(order);
 
