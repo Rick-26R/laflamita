@@ -6,11 +6,6 @@ import Products from '@/components/Products';
 import { useEffect, useState } from 'react';
 
 export default function ProductsPage() {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
 
   return (
     <>
@@ -30,7 +25,7 @@ export default function ProductsPage() {
           }}
         >
           <Toolbar />
-          {isMounted && <Products />}
+          <Products />
         </Box>
       </Box>
     </>

@@ -10,6 +10,7 @@ import RequestPageIcon from '@mui/icons-material/RequestPage';
 import ContactsIcon from '@mui/icons-material/Contacts';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CategoryIcon from '@mui/icons-material/Category';
+import { getRole } from '../../utils/CookiesUtils';
 
 export const mainListItems = (
     <React.Fragment>
@@ -50,14 +51,17 @@ export const mainListItems = (
             <ListItemText primary="Clientes" />
         </ListItemButton>
 
-        <ListItemButton
-            href='/admin/users'
-        >
-            <ListItemIcon>
-                <AssignmentIndIcon />
-            </ListItemIcon>
-            <ListItemText primary="Usuarios" />
-        </ListItemButton>
+        {getRole() === 'superadmin' && (
+            <ListItemButton
+                href='/admin/users'
+            >
+                <ListItemIcon>
+                    <AssignmentIndIcon />
+                </ListItemIcon>
+                <ListItemText primary="Usuarios" />
+            </ListItemButton>
+        )}
+
 
         {/*  <ListItemButton
             href='/admin/requests'

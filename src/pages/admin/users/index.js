@@ -3,15 +3,21 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Head from 'next/head';
 import MenuDash from '@/modules/MenuDash';
-import Providers from '@/modules/Providers';
 import { Container } from '@mui/material';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Copyright from '@/components/Copyright';
 import Users from '@/modules/Users';
+import { getRole } from '../../../../utils/CookiesUtils';
+import Router from 'next/router';
 
 export default function IndexUsers() {
-    const [user, setUser] = React.useState('admin');
+
+    React.useEffect(() => {
+        if (getRole() !== 'admin') {
+            Router.push('/admin/dashboard');
+        }
+    }, []);
 
     return (
         <>
@@ -19,7 +25,7 @@ export default function IndexUsers() {
                 <title>Usuarios</title>
             </Head>
             <Box sx={{ display: 'flex' }}>
-                <MenuDash title="Usuarios"/>
+                <MenuDash title="Usuarios" />
                 <Box
                     component="main"
                     sx={{
