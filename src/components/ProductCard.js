@@ -17,15 +17,12 @@ export default function ProductCard({ product }) {
           <Typography gutterBottom variant="h5" component="div" sx={{ fontWeight: 'bold' }}>
             {product.name}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            {product.description}
-          </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold' }}>
             Precio: {product.price}
           </Typography>
         </div>
         <Button variant="contained"
-          style={{ backgroundColor: orange400, color: 'white' }} s
+          style={{ backgroundColor: orange400, color: 'white' }}
           sx={{ alignSelf: 'flex-end', px: 1, py: 0.5 }}>
           Agregar al carrito
         </Button>

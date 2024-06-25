@@ -5,9 +5,11 @@ import { red, blue, amber } from '@mui/material/colors';
 import { Visibility, Edit, Delete, Close } from '@mui/icons-material';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
-import ProductCard, { ProductCardModal } from '../ProductCard';
-import { CategoryFormPut } from '../forms/CategoryForm';
+import { ProductCardModal } from '../ProductCard';
 import ProductFormUpdate from '../forms/ProductFormUpdate';
+import axios from 'axios';
+import Router from 'next/router';
+import { getToken } from '../../../utils/CookiesUtils';
 
 
 const style = {
@@ -27,6 +29,7 @@ const product = { id: 1, name: 'Manzana', description: 'Manzana fresca', price: 
 
 
 export function Actions(props) {
+    console.log(props);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -92,7 +95,7 @@ export function Actions(props) {
                     >
                         <Close />
                     </IconButton>
-                    <ProductFormUpdate id={props.id}/>
+                    <ProductFormUpdate data={props.data} />
                 </Box>
             </Modal>
 
@@ -116,8 +119,27 @@ export function Actions(props) {
 
             <IconButton
                 aria-label="delete"
-                onClick={() => {
+                onClick={async () => {
                     console.log('Eliminar');
+                    console.log(props.data.id);
+                    try {
+                        const response = await axios.delete(`/api/inventory/${props.data.id}`, {
+                            headers: {
+                                Authorization: `Bearer ${getToken()}`
+                            }
+                        });
+
+                        console.log(response);
+
+                        if (response.status === 200) {
+                            console.log('Producto eliminado');
+                            Router.reload();
+                        }
+
+
+                    } catch (error) {
+
+                    }
                 }}
             >
                 <Tooltip title="Eliminar producto(s)">

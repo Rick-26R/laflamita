@@ -15,7 +15,7 @@ export default function IndexProviders() {
     return (
         <>
             <Head>
-                <title>Provedores</title>
+                <title>Proveedores</title>
             </Head>
             <Box sx={{ display: 'flex' }}>
                 <MenuDash title="Provedores" />

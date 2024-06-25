@@ -13,34 +13,34 @@ import { visuallyHidden } from '@mui/utils';
 import Title from '../components/Title';
 import TextField from '@mui/material/TextField';
 import { Search } from '@mui/icons-material';
-import { Actions } from '../components/buttons/ButtonsUsers';
+import { NotBlocked, Blocked } from '../components/buttons/ButtonsUsers';
 import { Button } from '@mui/material';
 import { Chip, Stack, Modal, IconButton } from '@mui/material';
 import { Close } from '@mui/icons-material';
 import UsersForm from '@/components/forms/UsersForm';
 
 
-function createData(id, name, mail) {
-    return { id, name, mail };
+function createData(id, name, mail, status) {
+    return { id, name, mail, status };
 }
 
 
 const rows = [
-    createData(0, 'Elvis Presley', 'example1@mail.com'),
-    createData(1, 'Paul McCartney', 'example@mail.com'),
-    createData(2, 'Tom Scholz', 'example@mail.com'),
-    createData(3, 'Michael Jackson', 'example@mail.com'),
-    createData(4, 'Bruce Springsteen', 'example@mail.com'),
-    createData(5, 'Whitney Houston', 'example@mail.com'),
-    createData(6, 'Janis Joplin', 'example@mail.com'),
-    createData(7, 'Jimi Hendrix', 'example@mail.com'),
-    createData(8, 'Kurt Cobain', 'example@mail.com'),
-    createData(9, 'Jim Morrison', 'example@mail.com'),
-    createData(10, 'John Lennon', 'example@mail.com'),
-    createData(11, 'Freddie Mercury', 'example@mail.com'),
-    createData(12, 'David Bowie', 'example@mail.com'),
-    createData(13, 'Prince', 'example@mail.com'),
-    createData(14, 'Tina Turner', 'example@mail.com'),
+    createData(0, 'Elvis Presley', 'example1@mail.com', 'active'),
+    createData(1, 'Paul McCartney', 'example@mail.com', 'active'),
+    createData(2, 'Tom Scholz', 'example@mail.com', 'active'),
+    createData(3, 'Michael Jackson', 'example@mail.com', 'active'),
+    createData(4, 'Bruce Springsteen', 'example@mail.com', 'active'),
+    createData(5, 'Whitney Houston', 'example@mail.com', 'active'),
+    createData(6, 'Janis Joplin', 'example@mail.com', 'active'),
+    createData(7, 'Jimi Hendrix', 'example@mail.com', 'active'),
+    createData(8, 'Kurt Cobain', 'example@mail.com', 'active'),
+    createData(9, 'Jim Morrison', 'example@mail.com', 'blocked'),
+    createData(10, 'John Lennon', 'example@mail.com', 'blocked'),
+    createData(11, 'Freddie Mercury', 'example@mail.com', 'blocked'),
+    createData(12, 'David Bowie', 'example@mail.com', 'blocked'),
+    createData(13, 'Prince', 'example@mail.com', 'blocked'),
+    createData(14, 'Tina Turner', 'example@mail.com', 'blocked'),
 ];
 
 const rowsPerPageOptions = rows.map((row, index) => {
@@ -266,7 +266,7 @@ export default function Users(props) {
                                         align='center'
                                         padding='normal'
                                     >
-                                        <Actions id={row.id} />
+                                        {row.status === 'active' ? (<Blocked id={row.id} />) : (<NotBlocked id={row.id} />)}
                                     </TableCell>
                                 </TableRow>
                             ))}

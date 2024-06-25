@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { use } from 'react'
 import { styled } from '@mui/material/styles';
 import MuiDrawer from '@mui/material/Drawer';
 import MuiAppBar from '@mui/material/AppBar';
@@ -14,8 +14,11 @@ import Badge from '@mui/material/Badge';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Router from 'next/router';
-import { mainListItems, secondaryListItems } from '../components/ListUser';
-
+import { mainListItems as mainListUser } from '../components/ListUser';
+import { mainListItems as mainListClient } from '@/components/ListClients';
+import { getRole, getToken } from '../../utils/CookiesUtils';
+import { isExpired } from '../../utils/TokenUtils';
+import Cookies from 'js-cookie';
 
 const drawerWidth = 240;
 
@@ -72,6 +75,22 @@ export default function MenuDash(props) {
     const handleMenuOpen = () => {
         setAnchorEl(!anchorEl);
     }
+
+    React.useEffect(() => {
+        try {
+            if (!getToken()) {
+                Router.push('/');
+            }
+            if (isExpired(getToken())) {
+                Cookies.remove('token');
+                Router.push('/');
+            }
+        } catch (error) {
+            Cookies.remove('token');
+            Router.push('/');
+        }
+
+    }, [])
 
     return (
         <>
@@ -130,14 +149,8 @@ export default function MenuDash(props) {
                     >
                         <MenuItem
                             onClick={() => {
-                                Router.push('/profile');
-                            }}
-                        >
-                            Ver perfil
-                        </MenuItem>
-                        <MenuItem
-                            onClick={() => {
-                                Router.push('/close-session');
+                                Cookies.remove('token');
+                                Router.push('/');
                             }}
                         >
                             Cerrar sesión
@@ -160,7 +173,7 @@ export default function MenuDash(props) {
                 </Toolbar>
                 <Divider />
                 <List component="nav">
-                    {mainListItems}
+                    {getRole() === 'admin' || getRole() === 'superadmin' ? mainListUser : mainListClient}
                 </List>
             </Drawer>
         </>
