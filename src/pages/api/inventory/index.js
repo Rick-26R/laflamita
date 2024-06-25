@@ -23,9 +23,6 @@ export default async function inventory(req, res) {
         return res.status(401).json(new CustomResponse(401, 'Token expirado', null, null));
     }
 
-    if (decoded.role !== 'superadmin' && decoded.role !== 'admin') {
-        return res.status(403).json(new CustomResponse(403, 'No tienes permisos', null, null));
-    }
 
     try {
 
