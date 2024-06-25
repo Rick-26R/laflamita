@@ -92,7 +92,7 @@ export function Actions(props) {
                     >
                         <Close />
                     </IconButton>
-                    <ProductFormUpdate id={props.id}/>
+                    <ProductFormUpdate data={props.data}/>
                 </Box>
             </Modal>
 

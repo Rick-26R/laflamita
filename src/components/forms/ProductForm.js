@@ -9,7 +9,7 @@ import { MenuItem, Select, InputLabel, Input } from '@mui/material';
 import { getToken } from '../../../utils/CookiesUtils';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import Router  from 'next/router';
+import Router from 'next/router';
 
 export default function ProductForm() {
     const [categories, setCategories] = React.useState([]);
@@ -41,14 +41,14 @@ export default function ProductForm() {
                 ]);
 
                 const categoriesData = categoriesResponse.data.data.map(category => ({
-                    value: category._id,
+                    value: category.name,
                     label: category.name
                 }));
                 setCategories(categoriesData);
                 console.log(categoriesData);
                 console.log(providersResponse.data.data);
                 const providersData = providersResponse.data.data.map(provider => ({
-                    value: provider._id,
+                    value: provider.name,
                     label: `${provider.name} ${provider.lastname}`
                 }));
                 setProviders(providersData);
@@ -73,7 +73,7 @@ export default function ProductForm() {
             image: data.get('image'),
         });
 
-        if (!data.get('name') || !data.get('cost') || !data.get('costpublic') || !data.get('quantity') || !data.get('category') || !data.get('provider') || !data.get('expirationDate') || !data.get('image')) {
+        if (!data.get('name') || !data.get('cost') || !data.get('costpublic') || !data.get('quantity') || !data.get('category') || !data.get('expirationDate') || !data.get('image')) {
             setSnackbarMessage('Por favor, complete todos los campos.');
             setSnackbarSeverity('warning');
             setSnackbarOpen(true);
@@ -237,7 +237,7 @@ export default function ProductForm() {
                                 type="date"
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                             <InputLabel id="provider-label">Proveedor</InputLabel>
                             <Select
                                 fullWidth
@@ -251,7 +251,7 @@ export default function ProductForm() {
                                     </MenuItem>
                                 ))}
                             </Select>
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12}>
                             <InputLabel id="image-label">Imagen</InputLabel>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>

@@ -1,46 +1,127 @@
 import * as React from 'react';
+import axios from 'axios';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { MenuItem, Select, InputLabel, Input } from '@mui/material';
-
-const categories = [
-    { value: 10, label: 'Categoría 1' },
-    { value: 20, label: 'Categoría 2' },
-    { value: 30, label: 'Categoría 3' },
-];
-
-const providers = [
-    { value: 10, label: 'Proveedor 1' },
-    { value: 20, label: 'Proveedor 2' },
-    { value: 30, label: 'Proveedor 3' },
-];
+import { getToken } from '../../../utils/CookiesUtils';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Router from 'next/router';
 
 export default function ProductFormUpdate(props) {
-    const handleSubmit = (event) => {
+    console.log(props.data);
+    const [categories, setCategories] = React.useState([]);
+    const [providers, setProviders] = React.useState([]);
+    const [formData, setFormData] = React.useState(props.data);
+
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+    const [snackbarMessage, setSnackbarMessage] = React.useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = React.useState('info');
+
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+    };
+
+    React.useEffect(() => {
+        const fetchCategoriesAndProviders = async () => {
+            try {
+                const [categoriesResponse, providersResponse] = await Promise.all([
+                    axios.get('/api/category', {
+                        headers: {
+                            Authorization: `Bearer ${getToken()}`
+                        }
+                    }),
+                    axios.get('/api/providers', {
+                        headers: {
+                            Authorization: `Bearer ${getToken()}`
+                        }
+                    })
+                ]);
+
+                const categoriesData = categoriesResponse.data.data.map(category => ({
+                    value: category._id,
+                    label: category.name
+                }));
+                setCategories(categoriesData);
+
+                const providersData = providersResponse.data.data.map(provider => ({
+                    value: provider._id,
+                    label: `${provider.name} ${provider.lastname}`
+                }));
+                setProviders(providersData);
+            } catch (error) {
+                console.error("Error fetching categories and providers", error);
+            }
+        };
+
+        fetchCategoriesAndProviders();
+    }, []);
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
+        const updatedData = {
             name: data.get('name'),
             cost: data.get('cost'),
             costPublic: data.get('costpublic'),
             quantity: data.get('quantity'),
             category: data.get('category'),
             expirationDate: data.get('expirationDate'),
-            image: data.get('image'),
-        });
-
-        // Convertir la imagen a base64
-        const reader = new FileReader();
-        reader.readAsDataURL(data.get('image'));
-        reader.onload = function () {
-            console.log(reader.result);
+            image: data.get('image') === 'data:application/octet-stream;base64,' ? '' : data.get('image'),
         };
+
+        console.log(updatedData);
+
+        if (updatedData.cost <= 0 || updatedData.costPublic <= 0 || updatedData.quantity <= 0) {
+            setSnackbarMessage('Por favor, ingrese valores válidos.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+            return;
+        }
+
+        if (updatedData.expirationDate < new Date().toISOString().split('T')[0]) {
+            setSnackbarMessage('Por favor, ingrese una fecha válida.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+            return;
+        }
+
+        if (updatedData.image instanceof File) {
+            const reader = new FileReader();
+            reader.readAsDataURL(updatedData.image);
+            updatedData.image = await new Promise((resolve) => {
+                reader.onloadend = () => {
+                    resolve(reader.result);
+                };
+            });
+        }
+
+        try {
+            const response = await axios.put(`/api/inventory/${props.data.id}`, updatedData, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+
+            if (response.status === 200) {
+                setSnackbarMessage('Producto actualizado exitosamente.');
+                setSnackbarSeverity('success');
+                setSnackbarOpen(true);
+                setTimeout(() => {
+                    Router.reload();
+                }, 2000);
+            }
+        } catch (error) {
+            console.error("Error updating product", error);
+            setSnackbarMessage('Error al actualizar el producto.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+        }
     };
 
-    // Validación de entrada numérica
     const handleNumericInput = (event) => {
         const regex = /^[0-9]*\.?[0-9]*$/;
         if (!regex.test(event.target.value)) {
@@ -48,24 +129,16 @@ export default function ProductFormUpdate(props) {
         }
     };
 
-    // Validación y corrección de entrada numérica
     const handleChange = (event) => {
-        const { value } = event.target;
-        const regex = /^[0-9]*\.?[0-9]*$/;
-        if (!regex.test(value)) {
-            event.target.value = value.replace(/[^0-9.]/g, '');
-        }
+        const { name, value } = event.target;
+        setFormData(prevData => ({ ...prevData, [name]: value }));
     };
+
+    console.log(formData);
 
     return (
         <Container component="main" maxWidth="md">
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                }}
-            >
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                     <Grid container spacing={2}>
                         <Grid item xs={12} sm={6}>
@@ -75,6 +148,8 @@ export default function ProductFormUpdate(props) {
                                 required
                                 fullWidth
                                 id="name"
+                                value={formData.name}
+                                onChange={handleChange}
                             />
                         </Grid>
                         <Grid item xs={12} sm={6}>
@@ -85,6 +160,7 @@ export default function ProductFormUpdate(props) {
                                 fullWidth
                                 id="cost"
                                 type="text"
+                                value={formData.cost}
                                 onInput={handleNumericInput}
                                 onChange={handleChange}
                             />
@@ -97,6 +173,7 @@ export default function ProductFormUpdate(props) {
                                 fullWidth
                                 id="costpublic"
                                 type="text"
+                                value={formData.costPublic}
                                 onInput={handleNumericInput}
                                 onChange={handleChange}
                             />
@@ -109,6 +186,7 @@ export default function ProductFormUpdate(props) {
                                 fullWidth
                                 id="quantity"
                                 type="text"
+                                value={formData.quantity}
                                 onInput={handleNumericInput}
                                 onChange={handleChange}
                             />
@@ -119,7 +197,8 @@ export default function ProductFormUpdate(props) {
                                 fullWidth
                                 id="category"
                                 name="category"
-                                defaultValue=""
+                                value={formData.category}
+                                onChange={handleChange}
                             >
                                 {categories.map((category) => (
                                     <MenuItem key={category.value} value={category.value}>
@@ -136,15 +215,18 @@ export default function ProductFormUpdate(props) {
                                 id="expirationDate"
                                 name="expirationDate"
                                 type="date"
+                                value={formData.expirationDate}
+                                onChange={handleChange}
                             />
                         </Grid>
-                        <Grid item xs={12}>
-                            <InputLabel id="category-label">Provedor</InputLabel>
+                        {/* <Grid item xs={12}>
+                            <InputLabel id="provider-label">Proveedor</InputLabel>
                             <Select
                                 fullWidth
-                                id="category"
-                                name="category"
-                                defaultValue=""
+                                id="provider"
+                                name="provider"
+                                value={formData.provider}
+                                onChange={handleChange}
                             >
                                 {providers.map((provider) => (
                                     <MenuItem key={provider.value} value={provider.value}>
@@ -152,7 +234,7 @@ export default function ProductFormUpdate(props) {
                                     </MenuItem>
                                 ))}
                             </Select>
-                        </Grid>
+                        </Grid> */}
                         <Grid item xs={12}>
                             <InputLabel id="image-label">Imagen</InputLabel>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -162,20 +244,26 @@ export default function ProductFormUpdate(props) {
                                     type="file"
                                     fullWidth
                                     inputProps={{ accept: 'image/*' }}
+                                    onChange={(e) => setFormData(prevData => ({ ...prevData, image: e.target.files[0] }))}
                                 />
                             </Box>
                         </Grid>
                     </Grid>
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                    >
+                    <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
                         Guardar
                     </Button>
                 </Box>
             </Box>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Container>
     );
 }

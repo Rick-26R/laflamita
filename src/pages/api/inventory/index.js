@@ -31,7 +31,7 @@ export default async function inventory(req, res) {
 
         switch (method) {
             case 'POST':
-                const { name, cost, costPublic, quantity, category, provider, expirationDate, image } = req.body;
+                const { name, cost, costPublic, quantity, category, expirationDate, image } = req.body;
                 console.log(req.body);
                 if (!name || !cost || !costPublic || !quantity || !category || !expirationDate || !image) {
                     return res.status(400).json(new CustomResponse(400, 'Por favor, complete todos los campos', null, null));
@@ -42,15 +42,14 @@ export default async function inventory(req, res) {
                 if (productExists) {
                     return res.status(400).json(new CustomResponse(400, 'El producto ya existe', null, null));
                 }
-
+                
                 const product = {
                     _id: generateUUID(),
                     name: name,
-                    cost: cost,
-                    costPublic: costPublic,
-                    quantity: quantity,
+                    cost: parseFloat(cost),
+                    costPublic: parseFloat(costPublic),
+                    quantity: parseInt(quantity),
                     category: category,
-                    provider: provider,
                     expirationDate: expirationDate,
                     image: image,
                     createdAt: new Date(),
