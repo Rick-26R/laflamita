@@ -57,8 +57,8 @@ export default function Index() {
     };
 
     Cookies.set('token', JSON.stringify(cookieData), { expires: 1 });
-    
-    
+
+
     setSnackbarMessage('Inicio de sesión exitoso.');
     setSnackbarSeverity('success');
     setSnackbarOpen(true);
@@ -70,6 +70,12 @@ export default function Index() {
     }, 2000);
 
   };
+
+  React.useEffect(() => {
+    if (Cookies.get('token')) {
+      Router.push(JSON.parse(Cookies.get('token')).path);
+    }
+  }, []);
 
   return (
     <>

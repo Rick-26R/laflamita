@@ -14,7 +14,7 @@ export default function ProductsPage() {
 
   return (
     <>
-        <title>Productos</title>
+      <title>Productos</title>
       <Box sx={{ display: 'flex' }}>
         <MenuDash title="Productos" />
         <Box

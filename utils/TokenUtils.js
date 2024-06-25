@@ -1,4 +1,5 @@
 import Jwt from "jsonwebtoken";
+import { getToken } from "./CookiesUtils";
 
 export const generateToken = (user) => {
     const token = Jwt.sign(
@@ -40,4 +41,20 @@ export const isValidToken = (token) => {
     } catch (error) {
         return false;
     }
+}
+
+export const isAValidRoute = (route, role) => {
+    console.log('Route:', route);
+    console.log('role:', role);
+
+    if (role === 'admin' || role === 'superadmin') {
+        return true;
+    }
+
+    // si el usuario no es admin o superadmin no puede acceder a las rutas que inicien con /admin
+    if (route.startsWith('/admin') && role !== 'admin' && role !== 'superadmin') {
+        return false;
+    }
+
+    return true
 }

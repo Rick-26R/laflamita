@@ -4,12 +4,13 @@ import { orange } from '@mui/material/colors';
 const orange400 = orange[400];
 
 export default function ProductCard({ product }) {
+  console.log('ProductCard:', product);
   return (
     <Card sx={{ display: 'flex', height: '200px', boxShadow: 0 }}>
       <CardMedia
         component="img"
         sx={{ width: 180, objectFit: 'cover' }}
-        image={product.imageUrl}
+        image={product.image}
         alt={product.name}
       />
       <CardContent sx={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -18,12 +19,15 @@ export default function ProductCard({ product }) {
             {product.name}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ fontWeight: 'bold' }}>
-            Precio: {product.price}
+            Precio: {product.costPublic}
           </Typography>
         </div>
         <Button variant="contained"
           style={{ backgroundColor: orange400, color: 'white' }}
-          sx={{ alignSelf: 'flex-end', px: 1, py: 0.5 }}>
+          sx={{ alignSelf: 'flex-end', px: 1, py: 0.5 }}
+          onClick={() => {
+          }}
+        >
           Agregar al carrito
         </Button>
       </CardContent>

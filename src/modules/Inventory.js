@@ -92,7 +92,6 @@ export default function Inventory(props) {
                     }
                 });
                 const inventory = res.data.data;
-                console.log(inventory);
                 const formattedRows = inventory.map(item => createData(item._id, item.createdAt.split('T')[0], item.expirationDate, item.name, item.category, item.cost, item.costPublic, item.quantity));
                 setRows(formattedRows);
                 setFilteredRows(formattedRows);
@@ -104,7 +103,6 @@ export default function Inventory(props) {
         fetchInventory();
     }, []);
 
-    console.log(rows);
 
     React.useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
