@@ -40,35 +40,42 @@ export default function Index() {
       setSnackbarOpen(true);
       return;
     }
+    try {
 
-    const response = await axios.post('/api/login', { email, password });
+      const response = await axios.post('/api/login', { email, password });
 
-    if (response.status !== 200) {
+      if (response.status !== 200) {
+        setSnackbarMessage('Error al iniciar sesión.');
+        setSnackbarSeverity('error');
+        setSnackbarOpen(true);
+        return;
+      }
+
+      const cookieData = {
+        token: response.data.data.token,
+        role: response.data.data.role,
+        path: response.data.data.path,
+      };
+
+      Cookies.set('token', JSON.stringify(cookieData), { expires: 1 });
+      Cookies.set('email', email, { expires: 1 });
+
+
+      setSnackbarMessage('Inicio de sesión exitoso.');
+      setSnackbarSeverity('success');
+      setSnackbarOpen(true);
+      // Aquí iría la lógica para redirigir al usuario después de un inicio de sesión exitoso
+
+      //Esperar 2 segundos antes de redirigir
+      setTimeout(() => {
+        Router.push(response.data.data.path);
+      }, 2000);
+    } catch (error) {
+      console.error('Error al iniciar sesión:', error);
       setSnackbarMessage('Error al iniciar sesión.');
       setSnackbarSeverity('error');
       setSnackbarOpen(true);
-      return;
     }
-
-    const cookieData = {
-      token: response.data.data.token,
-      role: response.data.data.role,
-      path: response.data.data.path,
-    };
-
-    Cookies.set('token', JSON.stringify(cookieData), { expires: 1 });
-    Cookies.set('email', email, { expires: 1 });
-
-
-    setSnackbarMessage('Inicio de sesión exitoso.');
-    setSnackbarSeverity('success');
-    setSnackbarOpen(true);
-    // Aquí iría la lógica para redirigir al usuario después de un inicio de sesión exitoso
-
-    //Esperar 2 segundos antes de redirigir
-    setTimeout(() => {
-      Router.push(response.data.data.path);
-    }, 2000);
 
   };
 

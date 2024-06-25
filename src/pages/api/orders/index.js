@@ -56,6 +56,22 @@ export default async function orders(req, res) {
                 const rs = await insertDocument('orders', order);
                 console.log(rs);
 
+                // reducir stock de los productos comprados
+                items.forEach(async item => {
+                    const product = await findDocument('products', { _id: item.id });
+                    console.log(product);
+                    if (product) {
+                        const newStock = product.quantity - item.quantity;
+                        console.log(newStock);
+                        const db = await connectToDatabase();
+                        const result = await db.collection('products').updateOne({ _id: item.id }, { $set: { quantity: newStock } });
+
+                        if (!result) {
+                            return res.status(500).json(new CustomResponse(500, 'Error al actualizar stock', null, null));
+                        }
+                    }
+                });
+
                 if (!rs) {
                     return res.status(500).json(new CustomResponse(500, 'Error al crear la orden', null, null));
                 }
