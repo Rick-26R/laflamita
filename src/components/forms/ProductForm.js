@@ -1,25 +1,66 @@
 import * as React from 'react';
+import axios from 'axios';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { MenuItem, Select, InputLabel, Input } from '@mui/material';
-
-const categories = [
-    { value: 10, label: 'Categoría 1' },
-    { value: 20, label: 'Categoría 2' },
-    { value: 30, label: 'Categoría 3' },
-];
-
-const providers = [
-    { value: 10, label: 'Proveedor 1' },
-    { value: 20, label: 'Proveedor 2' },
-    { value: 30, label: 'Proveedor 3' },
-];
+import { getToken } from '../../../utils/CookiesUtils';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Router  from 'next/router';
 
 export default function ProductForm() {
-    const handleSubmit = (event) => {
+    const [categories, setCategories] = React.useState([]);
+    const [providers, setProviders] = React.useState([]);
+
+    const [snackbarOpen, setSnackbarOpen] = React.useState(false);
+    const [snackbarMessage, setSnackbarMessage] = React.useState('');
+    const [snackbarSeverity, setSnackbarSeverity] = React.useState('info');
+
+    const handleCloseSnackbar = () => {
+        setSnackbarOpen(false);
+    };
+
+
+    React.useEffect(() => {
+        const fetchCategoriesAndProviders = async () => {
+            try {
+                const [categoriesResponse, providersResponse] = await Promise.all([
+                    axios.get('/api/category', {
+                        headers: {
+                            Authorization: `Bearer ${getToken()}`
+                        }
+                    }),
+                    axios.get('/api/providers', {
+                        headers: {
+                            Authorization: `Bearer ${getToken()}`
+                        }
+                    })
+                ]);
+
+                const categoriesData = categoriesResponse.data.data.map(category => ({
+                    value: category._id,
+                    label: category.name
+                }));
+                setCategories(categoriesData);
+                console.log(categoriesData);
+                console.log(providersResponse.data.data);
+                const providersData = providersResponse.data.data.map(provider => ({
+                    value: provider._id,
+                    label: `${provider.name} ${provider.lastname}`
+                }));
+                setProviders(providersData);
+            } catch (error) {
+                console.error("Error fetching categories and providers", error);
+            }
+        };
+
+        fetchCategoriesAndProviders();
+    }, []);
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
@@ -32,12 +73,70 @@ export default function ProductForm() {
             image: data.get('image'),
         });
 
+        if (!data.get('name') || !data.get('cost') || !data.get('costpublic') || !data.get('quantity') || !data.get('category') || !data.get('provider') || !data.get('expirationDate') || !data.get('image')) {
+            setSnackbarMessage('Por favor, complete todos los campos.');
+            setSnackbarSeverity('warning');
+            setSnackbarOpen(true);
+            return;
+        }
+
+        if (data.get('cost') <= 0 || data.get('costpublic') <= 0 || data.get('quantity') <= 0) {
+            setSnackbarMessage('Por favor, ingrese valores válidos.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+            return;
+        }
+
+        if (data.get('expirationDate') < new Date().toISOString().split('T')[0]) {
+            setSnackbarMessage('Por favor, ingrese una fecha válida.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+            return;
+        }
+
         // Convertir la imagen a base64
         const reader = new FileReader();
         reader.readAsDataURL(data.get('image'));
-        reader.onload = function () {
-            console.log(reader.result);
-        };
+        const image = await new Promise((resolve) => {
+            reader.onloadend = () => {
+                resolve(reader.result);
+            };
+        }
+        );
+
+        try {
+            const response = await axios.post('/api/inventory', {
+                name: data.get('name'),
+                cost: data.get('cost'),
+                costPublic: data.get('costpublic'),
+                quantity: data.get('quantity'),
+                category: data.get('category'),
+                provider: data.get('provider'),
+                expirationDate: data.get('expirationDate'),
+                image: image
+            }, {
+                headers: {
+                    Authorization: `Bearer ${getToken()}`
+                }
+            });
+
+            console.log(response);
+
+            if (response.status === 201) {
+                setSnackbarMessage('Producto creado exitosamente.');
+                setSnackbarSeverity('success');
+                setSnackbarOpen(true);
+                setTimeout(() => {
+                    Router.push('/admin/inventory');
+                }, 2000);
+            }
+
+        } catch (error) {
+            console.error("Error creating product", error);
+            setSnackbarMessage('Error al crear el producto.');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
+        }
     };
 
     // Validación de entrada numérica
@@ -139,11 +238,11 @@ export default function ProductForm() {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <InputLabel id="category-label">Provedor</InputLabel>
+                            <InputLabel id="provider-label">Proveedor</InputLabel>
                             <Select
                                 fullWidth
-                                id="category"
-                                name="category"
+                                id="provider"
+                                name="provider"
                                 defaultValue=""
                             >
                                 {providers.map((provider) => (
@@ -176,6 +275,16 @@ export default function ProductForm() {
                     </Button>
                 </Box>
             </Box>
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleCloseSnackbar}
+                anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+                <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </Container>
     );
 }
