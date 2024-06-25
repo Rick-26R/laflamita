@@ -84,14 +84,22 @@ export default async function inventory(req, res) {
 
                 break;
             case 'DELETE':
-                if (!id) {
-                    return res.status(400).json(new CustomResponse(400, 'Por favor, proporcione un id', null, null));
-                }
-                const product = await findDocument('products', { _id: id });
-                if (!product) {
+                const productExistsDelete = await findDocument('products', { _id: id });
+                console.log(productExistsDelete);
+
+                if (!productExistsDelete) {
                     return res.status(404).json(new CustomResponse(404, 'Producto no encontrado', null, null));
                 }
-                const result = await deleteDocument('products', { _id: id });
+
+                console.log(productExistsDelete);
+
+                const dbDelete = await connectToDatabase();
+                const resultDelete = await dbDelete.collection('products').deleteOne({ _id: id });
+
+                if (resultDelete.deletedCount === 0) {
+                    return res.status(404).json(new CustomResponse(404, 'Producto no eliminado', null, null));
+                }
+
                 return res.status(200).json(new CustomResponse(200, 'Producto eliminado', null, null));
                 break
             default:

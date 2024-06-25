@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import Head from 'next/head';
 import MenuDash from '@/modules/MenuDash';
 import Products from '@/components/Products';
 import { useEffect, useState } from 'react';
@@ -15,11 +14,9 @@ export default function ProductsPage() {
 
   return (
     <>
-      <Head>
         <title>Productos</title>
-      </Head>
       <Box sx={{ display: 'flex' }}>
-        <MenuDash title="Carrito" />
+        <MenuDash title="Productos" />
         <Box
           component="main"
           sx={{
