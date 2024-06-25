@@ -5,9 +5,24 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import MenuDash from '@/modules/MenuDash';
 import Toolbar from '@mui/material/Toolbar';
+import { decodeToken } from '../../../utils/TokenUtils';
+import { getToken } from '../../../utils/CookiesUtils';
+import Cookies from 'js-cookie';
+import axios from 'axios';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
 
 export default function Home() {
   const [cartItems, setCartItems] = useState([]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarSeverity, setSnackbarSeverity] = useState('info');
+
+  const handleCloseSnackbar = () => {
+    setSnackbarOpen(false);
+  };
+
 
   useEffect(() => {
     // Cargar el carrito de localStorage al inicio
@@ -132,6 +147,38 @@ export default function Home() {
                       onClick={async () => {
                         // Aquí puedes enviar la orden al servidor
                         console.log('Orden enviada:', { cartItems });
+                        console.log(Cookies.get('email'));
+
+                        const data = {
+                          name: Cookies.get('email'),
+                          total: subtotal,
+                          items: cartItems,
+                          isPaid: false,
+                        };
+
+                        try {
+                          const response = await axios.post('/api/orders', { ...data }, {
+                            headers: {
+                              Authorization: `Bearer ${getToken()}`,
+                            },
+                          });
+
+                          console.log('Respuesta del servidor:', response);
+
+                          if (response.status === 200) {
+                            setSnackbarMessage('Compra realizada con éxito.');
+                            setSnackbarSeverity('success');
+                            setSnackbarOpen(true);
+                          }
+
+                          borrar();
+
+                        } catch (error) {
+                          console.error('Error al enviar la orden:', error);
+                          setSnackbarMessage('Error al enviar la orden.');
+                          setSnackbarSeverity('error');
+                          setSnackbarOpen(true);
+                        }
                       }}
                     >
                       Confirmar compra
@@ -143,6 +190,16 @@ export default function Home() {
           </Container>
         </Box>
       </Box>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbarSeverity} sx={{ width: '100%' }}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
     </>
   );
 }

@@ -57,6 +57,7 @@ export default function Index() {
     };
 
     Cookies.set('token', JSON.stringify(cookieData), { expires: 1 });
+    Cookies.set('email', email, { expires: 1 });
 
 
     setSnackbarMessage('Inicio de sesión exitoso.');

@@ -14,7 +14,7 @@ import Router from 'next/router';
 export default function IndexUsers() {
 
     React.useEffect(() => {
-        if (getRole() !== 'admin') {
+        if (getRole() !== 'superadmin') {
             Router.push('/admin/dashboard');
         }
     }, []);

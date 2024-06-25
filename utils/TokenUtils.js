@@ -1,13 +1,10 @@
 import Jwt from "jsonwebtoken";
-import { getToken } from "./CookiesUtils";
 
 export const generateToken = (user) => {
     const token = Jwt.sign(
         {
             id: user._id,
             email: user.email,
-            name: user.name,
-            lastname: user.lastname,
             role: user.role,
         },
         process.env.JWT_SECRET,
