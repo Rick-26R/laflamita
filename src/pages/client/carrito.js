@@ -165,7 +165,7 @@ export default function Home() {
 
                           console.log('Respuesta del servidor:', response);
 
-                          if (response.status === 200) {
+                          if (response.status === 201) {
                             setSnackbarMessage('Compra realizada con éxito.');
                             setSnackbarSeverity('success');
                             setSnackbarOpen(true);
