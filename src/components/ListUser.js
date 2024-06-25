@@ -59,7 +59,7 @@ export const mainListItems = (
             <ListItemText primary="Usuarios" />
         </ListItemButton>
 
-        <ListItemButton
+        {/*  <ListItemButton
             href='/admin/requests'
         >
             <ListItemIcon>
@@ -75,7 +75,7 @@ export const mainListItems = (
                 <ContactsIcon />
             </ListItemIcon>
             <ListItemText primary="Proveedores" />
-        </ListItemButton>
+        </ListItemButton> */}
 
     </React.Fragment>
 );
