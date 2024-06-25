@@ -19,8 +19,8 @@ import axios from 'axios';
 import { getToken } from '../../utils/CookiesUtils';
 import Button from '@mui/material/Button';
 
-function createData(id, date, expirate, name, category, cost, costPublic, quantity) {
-    return { id, date, expirate, name, category, cost, costPublic, quantity };
+function createData(id, date, expirate, name, category, cost, costPublic, quantity, image) {
+    return { id, date, expirate, name, category, cost, costPublic, quantity, image };
 }
 
 const headCells = [
@@ -92,7 +92,8 @@ export default function Inventory(props) {
                     }
                 });
                 const inventory = res.data.data;
-                const formattedRows = inventory.map(item => createData(item._id, item.createdAt.split('T')[0], item.expirationDate, item.name, item.category, item.cost, item.costPublic, item.quantity));
+                console.log(inventory);
+                const formattedRows = inventory.map(item => createData(item._id, item.createdAt.split('T')[0], item.expirationDate, item.name, item.category, item.cost, item.costPublic, item.quantity, item.image));
                 setRows(formattedRows);
                 setFilteredRows(formattedRows);
             } catch (error) {
@@ -213,6 +214,7 @@ export default function Inventory(props) {
                                             quantity: row.quantity,
                                             category: row.category,
                                             expirationDate: row.expirate,
+                                            imaage: row.image
                                         
                                         }} />
                                     </TableCell>

@@ -73,7 +73,7 @@ export function Actions(props) {
                     >
                         <Close />
                     </IconButton>
-                    <ProductCardModal product={product} />
+                    <ProductCardModal product={props.data} />
                 </Box>
             </Modal>
 
